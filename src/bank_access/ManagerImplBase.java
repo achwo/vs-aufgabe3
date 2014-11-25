@@ -1,7 +1,9 @@
 package bank_access;
 
-/**
- * Created by felix on 20.11.14.
- */
-public class ManagerImplBase {
+public abstract class ManagerImplBase {
+    public abstract String createAccount(String owner, String branch)
+            throws InvalidParamException;
+    public static ManagerImplBase narrowCast(Object rawObjectRef) {
+        return null; // todo implement
+    }
 }
