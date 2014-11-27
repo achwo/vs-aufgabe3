@@ -17,7 +17,7 @@ public class NameServiceProxy extends NameService {
 
     @Override
     public Object resolve(String name) {
-        // todo echt machen
+        // todo echt machen (ueber netzwerkkram)
         return nameService.resolve(name);
     }
 }
