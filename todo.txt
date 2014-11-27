@@ -1,0 +1,18 @@
+Networking
+- Request.invoke() und Constructor implementieren
+- RequestService implementieren
+- RequestProcessor implementieren
+
+-
+
+Bugs
+=======
+- was bindet der Nameservice an den namen? objectReferenz? (NameServiceProxyTest Z. 32)
+
+
+Backlog
+=======
+- ManagerImpl Integration Test
+- TransactionImpl Integration Test
+- AccountImpl Integration Test
+- Test mit Schulz' Testklassen
