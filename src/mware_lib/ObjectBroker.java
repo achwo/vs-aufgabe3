@@ -5,6 +5,7 @@ public class ObjectBroker {
     private final String serviceHost;
     private final int listenPort;
     private final boolean debug;
+    protected ReferenceManager referenceManager = new ReferenceManager();
 
     public ObjectBroker(String serviceHost, int listenPort, boolean debug) {
 
@@ -23,7 +24,7 @@ public class ObjectBroker {
 
     public NameService getNameService() {
         // todo implement
-        return null;
+        return new NameServiceProxy(referenceManager);
     }
 
     public void shutdown() {
