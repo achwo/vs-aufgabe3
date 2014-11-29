@@ -29,17 +29,19 @@ public class ReturnDeserializer<E> {
 
         if(!message.startsWith(RETURN))
             throw new InvalidMessageException("Wrong message type");
-        if(parts.length <= 1)
+        if(parts.length < 1)
             throw new InvalidMessageException("No return value found");
+
+        String value = parts.length > 1 ? parts[1] : "";
 
         Object returnValue;
 
         try {
             Method valueOf = type.getMethod("valueOf", String.class);
-            returnValue = valueOf.invoke(null, parts[1]);
+            returnValue = valueOf.invoke(null, value);
         } catch (Exception e) {
             // Class has no valueOf method
-            returnValue = parts[1];
+            returnValue = value;
         }
         return (E) returnValue;
     }

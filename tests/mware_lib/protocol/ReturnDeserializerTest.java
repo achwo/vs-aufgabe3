@@ -57,22 +57,14 @@ public class ReturnDeserializerTest {
         new ReturnDeserializer<>("asdf", String.class).parse();
     }
 
-    @Test(expected = InvalidMessageException.class)
-    public void testInvalidFormat_HasNoReturnValue() throws Exception {
-        new ReturnDeserializer<>("return|", String.class).parse();
+    @Test
+    public void testReturnMessageIsEmptyString() throws Exception {
+        String result = new ReturnDeserializer<>("return|", String.class).parse();
+        assertEquals("", result);
     }
 
-    @Test(expected = InvalidMessageException.class)
-    public void testInvalidFormat_HasNullReturnValue() throws Exception {
+    @Test
+    public void testReturnMessageIsNull() throws Exception {
         new ReturnDeserializer<>("return|null", String.class).parse();
     }
-
-
-    // todo can return value be null?
-    // todo exception|type ?
-
-    // todo exception|type|message
-    // todo exception|type|
-
-
 }
