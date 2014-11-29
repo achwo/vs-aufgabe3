@@ -33,12 +33,7 @@ public class NameServiceTest {
         senderThread.join();
         nameServiceThread.join();
 
-        // Act
-        // Assert
         assertEquals("servant", ns.resolve("name"));
-//        assertEquals(true, false);
-
-//        socket.close();
     }
 
     public class TestSender implements Runnable {
@@ -53,6 +48,8 @@ public class NameServiceTest {
                 out.write(message);
                 out.newLine();
                 out.flush();
+
+                socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }

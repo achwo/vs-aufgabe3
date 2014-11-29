@@ -6,6 +6,7 @@ import mware_lib.protocol.MessageDeserializer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -50,8 +51,14 @@ public class NameService implements Runnable {
             MessageDeserializer deserializer = new MessageDeserializer(message);
             String methodCall = deserializer.getMethodCall();
 
-            Skeleton<NameService> skeleton = new Skeleton<>(nameService);
-            skeleton.invoke(message);
+            Skeleton skeleton = new Skeleton(nameService);
+            try {
+                skeleton.invoke(methodCall);
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
 
             // 1. nachricht auseinandernehmen
             // "127.0.0.1|15000|NameService!woher|rebind|servant|name";

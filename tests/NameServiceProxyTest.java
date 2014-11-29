@@ -56,7 +56,7 @@ public class NameServiceProxyTest {
         public boolean wasCalled = false;
 
         @Override
-        public void putSkeleton(Object reference, Skeleton<name_service.NameService> skeleton) {
+        public void putSkeleton(Object reference, Skeleton skeleton) {
             wasCalled = true;
         }
 
