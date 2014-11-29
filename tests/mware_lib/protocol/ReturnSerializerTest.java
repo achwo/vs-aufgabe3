@@ -14,27 +14,18 @@ public class ReturnSerializerTest {
 
     @Test
     public void testEmptyString() throws Exception {
-        // Arrange
-        // Act
-        // Assert
         ReturnSerializer<String> serializer = new ReturnSerializer<>("");
         assertEquals("return|", serializer.serialize());
     }
 
     @Test
     public void testInteger() throws Exception {
-        // Arrange
-        // Act
-        // Assert
         ReturnSerializer<Integer> serializer = new ReturnSerializer<>(15);
         assertEquals("return|15", serializer.serialize());
     }
 
     @Test
     public void testNull() throws Exception {
-        // Arrange
-        // Act
-        // Assert
         ReturnSerializer<String> serializer = new ReturnSerializer<>(null);
         assertEquals("return|null", serializer.serialize());
     }
