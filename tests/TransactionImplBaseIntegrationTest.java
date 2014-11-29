@@ -7,16 +7,16 @@ public class TransactionImplBaseIntegrationTest {
 
     @Test
     public void testTransactionDeposit() throws Exception {
-//        // Arrange
-//        final String accountName = "accountName";
-//        TransactionImplBase transaction = TransactionImplBase.narrowCast(rawObjectRef);
-//
-//        // Act
-//
-//        transaction.deposit(accountName, 30.0);
-//
-//        // Assert
-//        assertEquals(30.0, transaction.getBalance(accountName));
+        // Arrange
+        final String accountName = "accountName";
+        Object rawObjectRef = "s";
+        TransactionImplBase transaction = TransactionImplBase.narrowCast(rawObjectRef);
+
+        // Act
+        transaction.deposit(accountName, 30.0);
+
+        // Assert
+        assertEquals(30.0, transaction.getBalance(accountName));
     }
 
 
