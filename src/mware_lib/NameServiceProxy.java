@@ -11,7 +11,7 @@ public class NameServiceProxy extends NameService {
 
     @Override
     public void rebind(Object servant, String name) {
-        referenceManager.putSkeleton(servant, new Skeleton(servant));
+        referenceManager.putSkeleton(servant, new Skeleton<name_service.NameService>(servant));
         nameService.rebind(servant, name);
     }
 

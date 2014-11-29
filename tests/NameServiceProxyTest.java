@@ -2,6 +2,7 @@ import cash_access.InvalidParamException;
 import cash_access.OverdraftException;
 import cash_access.TransactionImplBase;
 import mware_lib.*;
+import mware_lib.NameService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,7 +56,7 @@ public class NameServiceProxyTest {
         public boolean wasCalled = false;
 
         @Override
-        public void putSkeleton(Object reference, Skeleton skeleton) {
+        public void putSkeleton(Object reference, Skeleton<name_service.NameService> skeleton) {
             wasCalled = true;
         }
 
