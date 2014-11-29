@@ -2,7 +2,6 @@ package mware_lib.protocol;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class MethodCallDeserializer {
@@ -25,7 +24,7 @@ public class MethodCallDeserializer {
         Object[] returnObjects = new Object[stringParams.length];
         int i = 0;
         for (Class<?> paramType : method.getParameterTypes()) {
-            Method valueOf = null;
+            Method valueOf;
             try {
                 valueOf = paramType.getMethod("valueOf", String.class);
                 returnObjects[i] = valueOf.invoke(null, stringParams[i]);

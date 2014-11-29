@@ -54,9 +54,7 @@ public class NameService implements Runnable {
             Skeleton skeleton = new Skeleton(nameService);
             try {
                 skeleton.invoke(methodCall);
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

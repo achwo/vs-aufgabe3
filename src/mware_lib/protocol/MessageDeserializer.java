@@ -2,12 +2,11 @@ package mware_lib.protocol;
 
 public class MessageDeserializer {
 
-    String message = "127.0.0.1|15000|NameService|woher!rebind|servant|name";
-    private String hostname;
-    private int port;
-    private String objectName;
-    private String hashCode;
-    private String methodCall;
+    private final String hostname;
+    private final int port;
+    private final String objectName;
+    private final String hashCode;
+    private final String methodCall;
 
     public MessageDeserializer(String message) {
         String[] split = message.split("!");

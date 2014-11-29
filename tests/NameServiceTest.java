@@ -1,6 +1,5 @@
 import name_service.NameService;
 import org.junit.Test;
-import sun.jvm.hotspot.runtime.Threads;
 
 import java.io.*;
 import java.net.Socket;
