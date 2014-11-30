@@ -2,7 +2,7 @@ package mware_lib;
 
 import mware_lib.protocol.Message;
 import mware_lib.protocol.Protocol;
-import mware_lib.protocol.ReturnDeserializer;
+import mware_lib.protocol.ReturnValue;
 
 import java.io.*;
 import java.net.Socket;
@@ -58,9 +58,9 @@ public class NameServiceProxy extends NameService {
 
         try {
             result = request(request);
-            ReturnDeserializer<Object> returnDeserializer =
-                    new ReturnDeserializer<>(result, Object.class);
-            resultObject = returnDeserializer.deserialize();
+            ReturnValue<Object> returnValue =
+                    Protocol.returnValueFromMessage(result, Object.class);
+            resultObject = returnValue.getValue();
         } catch (Exception e) {
             e.printStackTrace();
         }

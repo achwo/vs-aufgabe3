@@ -7,30 +7,41 @@ import java.lang.reflect.Method;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class ReturnDeserializer<E> {
+public class ReturnValueFromMessage<E> implements ReturnValue<E> {
 
-    public static final String DELIMITER = "\\|";
-    public static final String RETURN = "return";
-    private String message;
-    private Class<E> type;
+    private final String message;
+    private final Class<E> type;
+    private E value;
 
-    public ReturnDeserializer(String message, Class<E> type) throws IllegalTypeException {
-        this.message = message;
+    ReturnValueFromMessage(String message, Class<E> type) throws IllegalTypeException {
         if (type.isPrimitive())
             throw new IllegalTypeException("Type must not be primitive");
+
+        this.message = message;
         this.type = type;
     }
 
+    @Override
+    public E getValue() throws InvalidMessageException {
+        if(value == null) deserialize();
+        return value;
+    }
+
+    @Override
+    public String asString() {
+        return message;
+    }
+
     @SuppressWarnings("unchecked")
-    public E deserialize() throws InvalidMessageException {
+    private void deserialize() throws InvalidMessageException {
         if (message == null || Objects.equals(message, ""))
             throw new InvalidMessageException("Message too short or null");
-        if (!Pattern.compile(DELIMITER).matcher(message).find())
+        if (!Pattern.compile(Protocol.REGEX_DELIMITER).matcher(message).find())
             throw new InvalidMessageException("Delimiter not found");
 
-        String[] parts = message.split(DELIMITER);
+        String[] parts = message.split(Protocol.REGEX_DELIMITER);
 
-        if(!message.startsWith(RETURN))
+        if(!message.startsWith(Protocol.RETURN))
             throw new InvalidMessageException("Wrong message type");
         if(parts.length < 1)
             throw new InvalidMessageException("No return value found");
@@ -46,7 +57,6 @@ public class ReturnDeserializer<E> {
             // Class has no valueOf method
             returnValue = value;
         }
-        return (E) returnValue;
+        this.value = (E) returnValue;
     }
-
 }

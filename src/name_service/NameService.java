@@ -53,7 +53,7 @@ public class NameService implements Runnable {
 
             Message message = Protocol.nullMessage();
             try {
-                message = Protocol.messageFromString(line);
+                message = Protocol.message(line);
             } catch (InvalidMessageException e) {
                 e.printStackTrace();
             }

@@ -4,13 +4,11 @@ import com.sun.deploy.util.StringUtils;
 import mware_lib.protocol.exceptions.InvalidMessageException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 class MessageImpl implements Message {
 
-    public static final String DELIMITER = "!";
     private String hostname;
     private final int port;
     private final Object object;
@@ -26,10 +24,10 @@ class MessageImpl implements Message {
     }
 
     MessageImpl(String message) throws InvalidMessageException {
-        String[] split = message.split(DELIMITER);
+        String[] split = message.split(Protocol.CALL_DELIMITER);
 
         if(split.length < 2)
-            throw new InvalidMessageException("No Delimiter '" + DELIMITER + "' found.");
+            throw new InvalidMessageException("No Delimiter '" + Protocol.CALL_DELIMITER + "' found.");
 
         String objReference = split[0];
         methodCall = split[1];

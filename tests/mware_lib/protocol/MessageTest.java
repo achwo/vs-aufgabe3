@@ -12,7 +12,7 @@ public class MessageTest {
     @Before
     public void setUp() throws Exception {
         String string = "127.0.0.1|15000|nameService|123456!rebind|servant|name";
-        messageFromString = Protocol.messageFromString(string);
+        messageFromString = Protocol.message(string);
     }
 
     @Test

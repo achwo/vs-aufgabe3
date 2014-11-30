@@ -1,17 +1,24 @@
 package mware_lib.protocol;
 
+import mware_lib.protocol.exceptions.IllegalTypeException;
 import mware_lib.protocol.exceptions.InvalidMessageException;
 
 
 public class Protocol {
 
     public static final NullMessage NULL_MESSAGE = new NullMessage();
+    public static final String REGEX_DELIMITER = "\\|";
+    public static final String RETURN = "return";
+    public static final String EXCEPTION = "exception";
+    public static final String CALL_DELIMITER = "!";
+    public static final String DELIMITER = "|";
+    private static final ReturnValue NULL_RETURN = new NullReturnValue();
 
-    public static Message messageFromString(String message) throws InvalidMessageException {
+    public static Message message(String message) throws InvalidMessageException {
         return new MessageImpl(message);
     }
 
-    public static MessageImpl messageFromParts(String hostname, int port, Object object) {
+    public static Message messageFromParts(String hostname, int port, Object object) {
         return new MessageImpl(hostname, port, object);
     }
 
@@ -23,9 +30,21 @@ public class Protocol {
         return new MethodCallFromMethodWithParams(methodName, args);
     }
 
+    public static <E> ReturnValue<E> returnValueFromMessage(
+            String message, Class<E> type) throws IllegalTypeException {
+        return new ReturnValueFromMessage<>(message, type);
+    }
+
+    public static <E> ReturnValue<E> returnValue(E value) throws IllegalTypeException {
+        return new ReturnValueFromValue<>(value);
+    }
+
 
     public static Message nullMessage() {
         return NULL_MESSAGE;
+    }
+    public static ReturnValue nullReturnValue() {
+        return NULL_RETURN;
     }
 
     private static class NullMessage implements Message {
@@ -61,4 +80,15 @@ public class Protocol {
         }
     }
 
+    private static class NullReturnValue implements ReturnValue<Object> {
+        @Override
+        public Object getValue() throws InvalidMessageException {
+            return null;
+        }
+
+        @Override
+        public String asString() {
+            return null;
+        }
+    }
 }
