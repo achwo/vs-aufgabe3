@@ -1,8 +1,10 @@
 package mware_lib;
 
+import mware_lib.networking.Request;
 import mware_lib.protocol.Message;
 import mware_lib.protocol.Protocol;
 import mware_lib.protocol.ReturnValue;
+import sun.misc.resources.Messages_sv;
 
 import java.io.*;
 import java.net.Socket;
@@ -25,38 +27,23 @@ public class NameServiceProxy extends NameService {
     public void rebind(Object servant, String name) {
         referenceManager.putSkeleton(servant, new Skeleton(servant));
 
-        // todo serialize object
-        // todo serialize message
-
-
-        String host = "127.0.0.1";
-        int port = 15001;
-        Object object = servant;
-        Message message = null;
-        message = Protocol.messageFromParts(host, port, object, "rebind", servant, name);
-
-        String request = "127.0.0.1|15001|nameservice|1234!rebind|servant|name";
-        try {
-            request(request);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Message message =
+                Protocol.messageFromParts(nameServiceHost, nameServicePort,
+                        "nameservice", "rebind", servant, name);
+        request(message.asString());
 
     }
 
     @Override
     public Object resolve(String name) {
-        // todo echt machen (ueber netzwerkkram)
-//        return nameService.resolve(name);
 
-        // todo serialize method call
-        // todo build request
-        String request = "127.0.0.1|15001|nameservice|1234!resolve|name";
-        String result;
+        Message message = Protocol.messageFromParts(nameServiceHost, nameServicePort,
+                "nameservice", "resolve", name);
+
         Object resultObject = null;
 
         try {
-            result = request(request);
+            String result = request(message.asString());
             ReturnValue<Object> returnValue =
                     Protocol.returnValueFromMessage(result, Object.class);
             resultObject = returnValue.getValue();
@@ -66,21 +53,9 @@ public class NameServiceProxy extends NameService {
         return resultObject;
     }
 
-    private String request(String message) throws IOException {
-        // todo use request object
-        Socket socket = new Socket(nameServiceHost, nameServicePort);
-        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-
-        out.write(message);
-        out.newLine();
-        out.flush();
-
-        String result = in.readLine();
-
-
-        socket.close();
-        return result;
+    private String request(String message) {
+        Request request = new Request(nameServiceHost, nameServicePort, message);
+        return request.invoke();
     }
 
 }
