@@ -19,7 +19,7 @@ public class ReturnDeserializer<E> {
     }
 
     @SuppressWarnings("unchecked")
-    public E parse() throws InvalidMessageException {
+    public E deserialize() throws InvalidMessageException {
         if (message == null || Objects.equals(message, ""))
             throw new InvalidMessageException("Message too short or null");
         if (!Pattern.compile(DELIMITER).matcher(message).find())

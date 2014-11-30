@@ -1,6 +1,6 @@
 package mware_lib;
 
-import mware_lib.protocol.MethodCallDeserializer;
+import mware_lib.protocol.MethodCall;
 import mware_lib.protocol.ReturnSerializer;
 
 import java.lang.reflect.InvocationTargetException;
@@ -14,8 +14,8 @@ public class Skeleton {
     }
 
     public String invoke(String message) throws InvocationTargetException, IllegalAccessException {
-        MethodCallDeserializer deserializer =
-                new MethodCallDeserializer(message, servant.getClass());
+        MethodCall deserializer =
+                new MethodCall(message, servant.getClass());
 
         Method method = deserializer.getMethod();
         Object[] args = deserializer.getParams();

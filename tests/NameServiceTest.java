@@ -20,7 +20,7 @@ public class NameServiceTest {
 
         // todo where to get the hashcode from?
 
-        NameService ns = new NameService();
+        NameService ns = new NameService(15000);
         ns.rebind("servant", "name");
 
         Thread nameServiceThread = new Thread(ns);

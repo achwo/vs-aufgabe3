@@ -1,10 +1,11 @@
 package name_service;
 
 import mware_lib.Skeleton;
-import mware_lib.protocol.MessageDeserializer;
+import mware_lib.protocol.InvalidMessageException;
+import mware_lib.protocol.Message;
+import mware_lib.protocol.Messages;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -15,8 +16,8 @@ public class NameService implements Runnable {
     private final NameServiceRequestService requestService;
     private Map<String, Object> names = new HashMap<>();
 
-    public NameService() {
-        this.requestService = new NameServiceRequestService(15000, this);
+    public NameService(int port) {
+        this.requestService = new NameServiceRequestService(port, this);
     }
 
     public void rebind(Object servant, String name) {
@@ -27,9 +28,13 @@ public class NameService implements Runnable {
         return names.get(name);
     }
 
+    public void shutdown() {
+        requestService.shutdown();
+    }
+
+
     @Override
     public void run() {
-
         Thread t = new Thread(requestService);
         t.run();
         try {
@@ -44,10 +49,15 @@ public class NameService implements Runnable {
     private class NameServiceRequestProcessor {
         public NameServiceRequestProcessor(Socket socket, NameService nameService) throws IOException{
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String message = in.readLine();
+            String line = in.readLine();
 
-            MessageDeserializer deserializer = new MessageDeserializer(message);
-            String methodCall = deserializer.getMethodCall();
+            Message message = Messages.nullMessage();
+            try {
+                message = Messages.fromString(line);
+            } catch (InvalidMessageException e) {
+                e.printStackTrace();
+            }
+            String methodCall = message.getMethodCall();
 
             Skeleton skeleton = new Skeleton(nameService);
             String result = "";
@@ -63,12 +73,11 @@ public class NameService implements Runnable {
             out.newLine();
             out.flush();
 
+            socket.close();
             // 1. nachricht auseinandernehmen
             // "127.0.0.1|15000|NameService!woher|rebind|servant|name";
             // split: Nachricht -> Objektreferenz | Aufruf
             // split: Aufruf -> Methode | Params...
-
-
         }
     }
 
@@ -77,23 +86,39 @@ public class NameService implements Runnable {
         private final int port;
         private NameService nameService;
         private ServerSocket serverSocket;
+        private boolean running;
 
         public NameServiceRequestService(int port, NameService nameService) {
             this.port = port;
             this.nameService = nameService;
+            try {
+                this.serverSocket = new ServerSocket(this.port);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public void run() {
+            running = true;
             try {
-                this.serverSocket = new ServerSocket(this.port);
-                Socket socket = serverSocket.accept();
 
-                NameServiceRequestProcessor processor =
-                        new NameServiceRequestProcessor(socket, nameService);
+                while(running) {
+                    Socket socket = serverSocket.accept();
+                    new NameServiceRequestProcessor(socket, nameService);
+                }
+            } catch (IOException e) {
+                running = false;
+            }
+        }
+
+        public void shutdown() {
+            try {
+                serverSocket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
     }
 }

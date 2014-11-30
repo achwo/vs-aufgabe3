@@ -6,15 +6,15 @@ import java.lang.reflect.Method;
 
 import static org.junit.Assert.*;
 
-public class MethodCallDeserializerTest {
+public class MethodCallTest {
 
 
     @Test
     public void testTestObject() throws Exception {
         String message = "add|1|2";
 
-        MethodCallDeserializer deserializer =
-                new MethodCallDeserializer(message, TestObject.class);
+        MethodCall deserializer =
+                new MethodCall(message, TestObject.class);
 
         Method expected = TestObject.class.getMethod("add", Integer.class, Integer.class);
 

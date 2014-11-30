@@ -1,7 +1,8 @@
-import cash_access.InvalidParamException;
-import cash_access.OverdraftException;
-import cash_access.TransactionImplBase;
-import mware_lib.*;
+import mware_lib.NameService;
+import mware_lib.NameServiceProxy;
+import mware_lib.ReferenceManager;
+import mware_lib.Skeleton;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,44 +12,34 @@ public class NameServiceProxyTest {
 
     private NameService nameServiceProxy;
     private TestReferenceManager testManager;
-    private TransactionImplBase testObject;
+    private String testObject;
+    private name_service.NameService nameService;
+    public static final int PORT = 15001;
 
     @Before
     public void setUp() {
         testManager = new TestReferenceManager();
-        nameServiceProxy = new NameServiceProxy(testManager);
-        testObject = new TestObject();
+        nameService = new name_service.NameService(PORT);
+        new Thread(nameService).start();
+        nameServiceProxy = new NameServiceProxy("127.0.0.1", PORT, testManager);
+        testObject = "servant";
+    }
+
+    @After
+    public void tearDown() {
+        nameService.shutdown();
     }
 
     @Test
     public void testBindObjectToNameServiceSavesName() throws Exception {
-        // todo is das richtig, oder muss da ne objektreferenz hin?
         nameServiceProxy.rebind(testObject, "name");
         assertEquals(testObject, nameServiceProxy.resolve("name"));
     }
 
     @Test
     public void testBindObjectToNameServicePutsSkeletonToRefManager() throws Exception {
-        // todo is das richtig, oder muss da ne objektreferenz hin?
         nameServiceProxy.rebind(testObject, "name");
         assertEquals(true, testManager.wasCalled);
-    }
-
-    private class TestObject extends TransactionImplBase {
-        @Override
-        public void deposit(String accountID, double amount) throws InvalidParamException {
-
-        }
-
-        @Override
-        public void withdraw(String accountID, double amount) throws InvalidParamException, OverdraftException {
-
-        }
-
-        @Override
-        public double getBalance(String accountID) throws InvalidParamException {
-            return 0;
-        }
     }
 
     private class TestReferenceManager extends ReferenceManager {
@@ -58,8 +49,5 @@ public class NameServiceProxyTest {
         public void putSkeleton(Object reference, Skeleton skeleton) {
             wasCalled = true;
         }
-
-
-
     }
 }

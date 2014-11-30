@@ -4,11 +4,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
-public class MethodCallDeserializer {
+public class MethodCall {
     private Method method;
     private Object[] params;
 
-    public MethodCallDeserializer(String message, Class<?> type) {
+    public MethodCall(String message, Class<?> type) {
         String[] parts = message.split("\\|", 2);
         try {
             method = findMethod(parts[0], type);

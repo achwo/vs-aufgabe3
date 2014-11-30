@@ -24,7 +24,7 @@ public class ObjectBroker {
 
     public NameService getNameService() {
         // todo implement
-        return new NameServiceProxy(referenceManager);
+        return new NameServiceProxy("127.0.0.1", 15000, referenceManager);
     }
 
     public void shutdown() {
