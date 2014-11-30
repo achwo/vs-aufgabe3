@@ -24,7 +24,7 @@ public class Messages {
         return NULL_MESSAGE;
     }
 
-    public static class MessageImpl implements Message {
+    private static class MessageImpl implements Message {
 
         public static final String DELIMITER = "!";
         private String hostname;
@@ -82,6 +82,7 @@ public class Messages {
             return methodCall;
         }
 
+        @Override
         public void setMethod(String methodName, Object... args) {
             List<String> strings = new ArrayList<>();
             strings.add(methodName);
