@@ -21,6 +21,7 @@ public class NameServiceTest {
         // todo where to get the hashcode from?
 
         NameService ns = new NameService();
+        ns.rebind("servant", "name");
 
         Thread nameServiceThread = new Thread(ns);
         nameServiceThread.start();
@@ -32,21 +33,28 @@ public class NameServiceTest {
         senderThread.join();
         nameServiceThread.join();
 
-        assertEquals("servant", ns.resolve("name"));
+        assertEquals("return|servant", sender.result);
     }
 
     public class TestSender implements Runnable {
+
+        String result;
+
         @Override
         public void run() {
             try {
                 Socket socket = new Socket("127.0.0.1", 15000);
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                String message = "127.0.0.1|15000|NameService|woher!rebind|servant|name";
+                String message = "127.0.0.1|15000|NameService|woher!resolve|name";
+//                String message = "127.0.0.1|15000|NameService|woher!rebind|servant|name";
 
                 out.write(message);
                 out.newLine();
                 out.flush();
+
+                result = in.readLine();
+
 
                 socket.close();
             } catch (IOException e) {

@@ -3,9 +3,7 @@ package name_service;
 import mware_lib.Skeleton;
 import mware_lib.protocol.MessageDeserializer;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -52,11 +50,18 @@ public class NameService implements Runnable {
             String methodCall = deserializer.getMethodCall();
 
             Skeleton skeleton = new Skeleton(nameService);
+            String result = "";
             try {
-                skeleton.invoke(methodCall);
+                    result = skeleton.invoke(methodCall);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
+            out.write(result);
+            out.newLine();
+            out.flush();
 
             // 1. nachricht auseinandernehmen
             // "127.0.0.1|15000|NameService!woher|rebind|servant|name";
