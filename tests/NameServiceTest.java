@@ -46,7 +46,7 @@ public class NameServiceTest {
                 Socket socket = new Socket("127.0.0.1", 15000);
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                String message = "127.0.0.1|15000|NameService|woher!resolve|name";
+                String message = "127.0.0.1|15000|NameService|1234!resolve|name";
 //                String message = "127.0.0.1|15000|NameService|woher!rebind|servant|name";
 
                 out.write(message);

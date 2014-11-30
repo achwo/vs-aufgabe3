@@ -10,24 +10,31 @@ public class MethodCallTest {
 
 
     @Test
-    public void testTestObject() throws Exception {
+    public void testFromMessage() throws Exception {
         String message = "add|1|2";
 
-        MethodCall deserializer =
-                new MethodCall(message, TestObject.class);
+        MethodCall methodCall = Protocol.methodCallFromMessage(message, TestObject.class);
 
         Method expected = TestObject.class.getMethod("add", Integer.class, Integer.class);
 
-        assertEquals(expected, deserializer.getMethod());
-        assertEquals(1, deserializer.getParams()[0]);
-        assertEquals(2, deserializer.getParams()[1]);
+        assertEquals(expected, methodCall.getMethod(TestObject.class));
+        assertEquals(1, methodCall.getParams(TestObject.class)[0]);
+        assertEquals(2, methodCall.getParams(TestObject.class)[1]);
+        assertEquals(message, methodCall.asString());
     }
 
-    private class TestObject {
-        public boolean wasCalled = false;
+    @Test
+    public void testFromMethod() throws Exception {
+        MethodCall methodCall = Protocol.methodCall("add", 1, 2);
 
-        public void add(Integer i, Integer j) {
-            wasCalled = true;
-        }
+        Method expected = TestObject.class.getMethod("add", Integer.class, Integer.class);
+
+        assertEquals(expected, methodCall.getMethod(TestObject.class));
+        assertEquals("add|1|2", methodCall.asString());
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    private class TestObject {
+        public void add(Integer i, Integer j) {}
     }
 }

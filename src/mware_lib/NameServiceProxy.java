@@ -1,7 +1,7 @@
 package mware_lib;
 
 import mware_lib.protocol.Message;
-import mware_lib.protocol.Messages;
+import mware_lib.protocol.Protocol;
 import mware_lib.protocol.ReturnDeserializer;
 
 import java.io.*;
@@ -33,10 +33,10 @@ public class NameServiceProxy extends NameService {
         int port = 15001;
         Object object = servant;
         Message message = null;
-        message = Messages.fromParts(host, port, object);
+        message = Protocol.messageFromParts(host, port, object);
         message.setMethod("rebind", servant, name);
 
-        String request = "127.0.0.1|15001|nameservice|bla!rebind|servant|name";
+        String request = "127.0.0.1|15001|nameservice|1234!rebind|servant|name";
         try {
             request(request);
         } catch (IOException e) {
@@ -52,7 +52,7 @@ public class NameServiceProxy extends NameService {
 
         // todo serialize method call
         // todo build request
-        String request = "127.0.0.1|15001|nameservice|bla!resolve|name";
+        String request = "127.0.0.1|15001|nameservice|1234!resolve|name";
         String result;
         Object resultObject = null;
 

@@ -1,5 +1,8 @@
 package mware_lib.protocol;
 
+import mware_lib.protocol.exceptions.IllegalTypeException;
+import mware_lib.protocol.exceptions.InvalidMessageException;
+
 import java.lang.reflect.Method;
 import java.util.Objects;
 import java.util.regex.Pattern;

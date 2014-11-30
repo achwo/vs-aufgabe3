@@ -1,5 +1,6 @@
 package mware_lib;
 
+import mware_lib.protocol.Protocol;
 import mware_lib.protocol.MethodCall;
 import mware_lib.protocol.ReturnSerializer;
 
@@ -15,10 +16,10 @@ public class Skeleton {
 
     public String invoke(String message) throws InvocationTargetException, IllegalAccessException {
         MethodCall deserializer =
-                new MethodCall(message, servant.getClass());
+                Protocol.methodCallFromMessage(message, servant.getClass());
 
-        Method method = deserializer.getMethod();
-        Object[] args = deserializer.getParams();
+        Method method = deserializer.getMethod(servant.getClass());
+        Object[] args = deserializer.getParams(servant.getClass());
         //things.toArray(new Thing[things.size()])
         Object result = method.invoke(servant, args);
 

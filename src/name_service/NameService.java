@@ -1,9 +1,9 @@
 package name_service;
 
 import mware_lib.Skeleton;
-import mware_lib.protocol.InvalidMessageException;
+import mware_lib.protocol.exceptions.InvalidMessageException;
 import mware_lib.protocol.Message;
-import mware_lib.protocol.Messages;
+import mware_lib.protocol.Protocol;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -51,9 +51,9 @@ public class NameService implements Runnable {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String line = in.readLine();
 
-            Message message = Messages.nullMessage();
+            Message message = Protocol.nullMessage();
             try {
-                message = Messages.fromString(line);
+                message = Protocol.messageFromString(line);
             } catch (InvalidMessageException e) {
                 e.printStackTrace();
             }

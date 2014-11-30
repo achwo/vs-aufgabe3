@@ -12,7 +12,7 @@ public class MessageTest {
     @Before
     public void setUp() throws Exception {
         String string = "127.0.0.1|15000|nameService|123456!rebind|servant|name";
-        messageFromString = Messages.fromString(string);
+        messageFromString = Protocol.messageFromString(string);
     }
 
     @Test
@@ -30,7 +30,7 @@ public class MessageTest {
 
     @Test
     public void testMessageFromParts() throws Exception {
-        Message messageFromParts = Messages.fromParts("127.0.0.1", 15000, "hallo");
+        Message messageFromParts = Protocol.messageFromParts("127.0.0.1", 15000, "hallo");
         assertEquals("127.0.0.1", messageFromParts.getHostname());
         assertEquals(15000, messageFromParts.getPort());
         assertEquals("hallo", messageFromParts.getObjectName());

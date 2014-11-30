@@ -1,5 +1,7 @@
 package mware_lib.protocol;
 
+import mware_lib.protocol.exceptions.IllegalTypeException;
+import mware_lib.protocol.exceptions.InvalidMessageException;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
