@@ -14,13 +14,16 @@ class MessageImpl implements Message {
     private final Object object;
     private final int hashCode;
     private String methodCall;
+    private String message;
 
 
-    MessageImpl(String hostname, int port, Object object) {
+    MessageImpl(String hostname, int port, Object object,
+                String methodName, Object[] methodParams) {
         this.hostname = hostname;
         this.port = port;
         this.object = object;
         this.hashCode = Objects.hashCode(object);
+        this.setMethod(methodName, methodParams);
     }
 
     MessageImpl(String message) throws InvalidMessageException {
@@ -37,6 +40,7 @@ class MessageImpl implements Message {
         port = Integer.valueOf(objParts[1]);
         object = objParts[2];
         hashCode = Integer.valueOf(objParts[3]);
+        this.message = message;
     }
 
     @Override
@@ -60,12 +64,24 @@ class MessageImpl implements Message {
     }
 
     @Override
-    public String getMethodCall() {
+    public String getMethodCallAsString() {
         return methodCall;
     }
 
     @Override
-    public void setMethod(String methodName, Object... args) {
+    public String asString() {
+        if(message == null) buildMessage();
+        return message;
+    }
+
+    private void buildMessage() {
+        this.message = String.join(
+                Protocol.CALL_DELIMITER,
+                getObjectReferenceAsString(),
+                getMethodCallAsString());
+    }
+
+    private void setMethod(String methodName, Object... args) {
         List<String> strings = new ArrayList<>();
         strings.add(methodName);
 
@@ -73,8 +89,17 @@ class MessageImpl implements Message {
             strings.add(Objects.toString(o));
         }
 
-        methodCall = StringUtils.join(strings, "|");
+        methodCall = StringUtils.join(strings, Protocol.DELIMITER);
     }
 
 
+    private String getObjectReferenceAsString() {
+        List<String> strings = new ArrayList<>();
+        strings.add(hostname);
+        strings.add(Objects.toString(port));
+        strings.add(getObjectName());
+        strings.add(Objects.toString(hashCode));
+
+        return StringUtils.join(strings, Protocol.DELIMITER);
+    }
 }

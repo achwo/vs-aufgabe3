@@ -13,7 +13,7 @@ public class MethodCallTest {
     public void testFromMessage() throws Exception {
         String message = "add|1|2";
 
-        MethodCall methodCall = Protocol.methodCallFromMessage(message, TestObject.class);
+        MethodCall methodCall = Protocol.methodCallFromMessage(message);
 
         Method expected = TestObject.class.getMethod("add", Integer.class, Integer.class);
 

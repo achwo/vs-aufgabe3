@@ -18,11 +18,13 @@ public class Protocol {
         return new MessageImpl(message);
     }
 
-    public static Message messageFromParts(String hostname, int port, Object object) {
-        return new MessageImpl(hostname, port, object);
+    public static Message messageFromParts(String hostname, int port,
+                                           Object object, String methodName,
+                                           Object... methodParams) {
+        return new MessageImpl(hostname, port, object, methodName, methodParams);
     }
 
-    public static MethodCall methodCallFromMessage(String message, Class<?> type) {
+    public static MethodCall methodCallFromMessage(String message) {
         return new MethodCallFromMessage(message);
     }
 
@@ -70,13 +72,13 @@ public class Protocol {
         }
 
         @Override
-        public String getMethodCall() {
+        public String getMethodCallAsString() {
             return null;
         }
 
         @Override
-        public void setMethod(String methodName, Object... args) {
-
+        public String asString() {
+            return null;
         }
     }
 

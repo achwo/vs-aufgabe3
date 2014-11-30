@@ -33,8 +33,7 @@ public class NameServiceProxy extends NameService {
         int port = 15001;
         Object object = servant;
         Message message = null;
-        message = Protocol.messageFromParts(host, port, object);
-        message.setMethod("rebind", servant, name);
+        message = Protocol.messageFromParts(host, port, object, "rebind", servant, name);
 
         String request = "127.0.0.1|15001|nameservice|1234!rebind|servant|name";
         try {

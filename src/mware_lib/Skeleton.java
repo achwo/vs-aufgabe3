@@ -16,7 +16,7 @@ public class Skeleton {
 
     public String invoke(String message) throws InvocationTargetException, IllegalAccessException {
         MethodCall deserializer =
-                Protocol.methodCallFromMessage(message, servant.getClass());
+                Protocol.methodCallFromMessage(message);
 
         Method method = deserializer.getMethod(servant.getClass());
         Object[] args = deserializer.getParams(servant.getClass());

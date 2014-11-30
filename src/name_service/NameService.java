@@ -57,7 +57,7 @@ public class NameService implements Runnable {
             } catch (InvalidMessageException e) {
                 e.printStackTrace();
             }
-            String methodCall = message.getMethodCall();
+            String methodCall = message.getMethodCallAsString();
 
             Skeleton skeleton = new Skeleton(nameService);
             String result = "";
