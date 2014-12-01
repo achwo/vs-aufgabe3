@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class ReturnValueFromMessage<E> implements ReturnValue<E> {
+class ReturnValueFromMessage<E> implements ReturnValue<E> {
 
     private final String message;
     private final Class<E> type;

@@ -1,6 +1,6 @@
 package mware_lib.protocol;
 
-public class ExceptionValueFromMessage<E> implements ExceptionValue<E> {
+class ExceptionValueFromMessage<E> implements ExceptionValue<E> {
 
     public ExceptionValueFromMessage(String message) {
 

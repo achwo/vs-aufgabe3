@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class MethodCallFromMessage implements MethodCall {
+class MethodCallFromMessage implements MethodCall {
     private final String methodName;
     private final String[] stringParams;
     private Method method;

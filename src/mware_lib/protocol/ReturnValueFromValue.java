@@ -2,12 +2,12 @@ package mware_lib.protocol;
 
 import java.util.Objects;
 
-public class ReturnValueFromValue<E> implements ReturnValue<E> {
+class ReturnValueFromValue<E> implements ReturnValue<E> {
 
     private final E value;
     private String message;
 
-    public ReturnValueFromValue(E value) {
+    ReturnValueFromValue(E value) {
         this.value = value;
     }
 

@@ -1,15 +1,10 @@
 package mware_lib.protocol;
 
 public interface Message {
-    String getHostname();
-
-    int getPort();
-
-    String getObjectName();
-
-    int getHashCode();
-
-    String getMethodCallAsString();
-
-    String asString();
+    public String getHostname();
+    public int getPort();
+    public String getObjectName();
+    public int getHashCode();
+    public String getMethodCallAsString();
+    public String asString();
 }

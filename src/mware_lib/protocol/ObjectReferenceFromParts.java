@@ -2,7 +2,7 @@ package mware_lib.protocol;
 
 import java.util.Objects;
 
-public class ObjectReferenceFromParts implements ObjectReference {
+class ObjectReferenceFromParts implements ObjectReference {
     private final Object object;
     private final String hostname;
     private final int port;

@@ -1,6 +1,6 @@
 package mware_lib.protocol;
 
-public class ObjectReferenceFromMessage implements ObjectReference {
+class ObjectReferenceFromMessage implements ObjectReference {
     private final String hostname;
     private final Integer port;
     private final String objectName;
