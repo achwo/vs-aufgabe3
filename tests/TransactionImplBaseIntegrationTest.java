@@ -9,6 +9,8 @@ import static junit.framework.TestCase.assertEquals;
 
 public class TransactionImplBaseIntegrationTest {
 
+    private String accountName;
+
     @Test
     public void testTransactionDeposit() throws Exception {
         int nsPort = 15000;
@@ -25,7 +27,7 @@ public class TransactionImplBaseIntegrationTest {
 
         Object rawObjRef = nameService.resolve("test");
 
-        final String accountName = "accountName";
+        accountName = "accountName";
         TransactionImplBase transaction = TransactionImplBase.narrowCast(rawObjRef);
 
         // Act
@@ -33,6 +35,10 @@ public class TransactionImplBaseIntegrationTest {
 
         // Assert
         assertEquals(30.0, transaction.getBalance(accountName));
+
+        transaction.withdraw(accountName, 25.0);
+
+        assertEquals(5.0, transaction.getBalance(accountName));
 
         ns.shutdown();
         broker.shutdown();
@@ -44,16 +50,19 @@ public class TransactionImplBaseIntegrationTest {
 
         @Override
         public void deposit(String accountID, double amount) throws InvalidParamException {
+            assertEquals(accountName, accountID);
             balance += amount;
         }
 
         @Override
         public void withdraw(String accountID, double amount) throws InvalidParamException, OverdraftException {
+            assertEquals(accountName, accountID);
             balance -= amount;
         }
 
         @Override
         public double getBalance(String accountID) throws InvalidParamException {
+            assertEquals(accountName, accountID);
             return balance;
         }
     }

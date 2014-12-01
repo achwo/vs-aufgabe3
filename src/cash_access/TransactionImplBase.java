@@ -1,6 +1,8 @@
 package cash_access;
 
-public abstract class TransactionImplBase {
+import mware_lib.Proxy;
+
+public abstract class TransactionImplBase extends Proxy {
     public abstract void deposit(String accountID, double amount)
         throws InvalidParamException;
     public abstract void withdraw(String accountID, double amount)

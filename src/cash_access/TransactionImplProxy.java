@@ -16,22 +16,17 @@ public class TransactionImplProxy extends TransactionImplBase {
 
     @Override
     public void deposit(String accountID, double amount) throws InvalidParamException {
-        Message message = Protocol.messageFromParts(objectReference, "deposit", accountID, amount);
-
-        Request request = new Request(message.getHostname(), message.getPort(), message.asString());
-        request.invoke();
+        sendMessage(objectReference, "deposit", accountID, amount);
     }
 
     @Override
     public void withdraw(String accountID, double amount) throws InvalidParamException, OverdraftException {
-
+        sendMessage(objectReference, "withdraw", accountID, amount);
     }
 
     @Override
     public double getBalance(String accountID) throws InvalidParamException {
-        Message message = Protocol.messageFromParts(objectReference, "getBalance", accountID);
-        Request request = new Request(message.getHostname(), message.getPort(), message.asString());
-        String result = request.invoke();
+        String result = sendMessage(objectReference, "getBalance", accountID);
         Double balance = -1.0;
         try {
             ReturnValue<Double> value = Protocol.returnValueFromMessage(result, Double.class);
