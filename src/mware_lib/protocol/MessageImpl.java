@@ -9,21 +9,15 @@ import java.util.Objects;
 
 class MessageImpl implements Message {
 
-    private String hostname;
-    private final int port;
-    private final Object object;
-    private final int hashCode;
+    private final ObjectReference objectReference;
     private String methodCall;
     private String message;
 
 
     MessageImpl(String hostname, int port, Object object,
                 String methodName, Object[] methodParams) {
-        this.hostname = hostname;
-        this.port = port;
-        this.object = object;
-        this.hashCode = Objects.hashCode(object);
         this.setMethod(methodName, methodParams);
+        this.objectReference = Protocol.objectReference(object, hostname, port);
     }
 
     MessageImpl(String message) throws InvalidMessageException {
@@ -32,35 +26,39 @@ class MessageImpl implements Message {
         if(split.length < 2)
             throw new InvalidMessageException("No Delimiter '" + Protocol.CALL_DELIMITER + "' found.");
 
-        String objReference = split[0];
         methodCall = split[1];
-
-        String[] objParts = objReference.split("\\|");
-        hostname = objParts[0];
-        port = Integer.valueOf(objParts[1]);
-        object = objParts[2];
-        hashCode = Integer.valueOf(objParts[3]);
+        this.objectReference = Protocol.objectReferenceFromMessage(split[0]);
         this.message = message;
+    }
+
+    public MessageImpl(String objectReference, String methodName, Object[] methodParams) {
+        this.objectReference = Protocol.objectReferenceFromMessage(objectReference);
+        setMethod(methodName, methodParams);
     }
 
     @Override
     public String getHostname() {
-        return hostname;
+        return objectReference.getHostname();
     }
 
     @Override
     public int getPort() {
-        return port;
+        return objectReference.getPort();
     }
 
     @Override
     public String getObjectName() {
-        return Objects.toString(object);
+        return objectReference.getObjectName();
     }
 
     @Override
-    public String getHashCode() {
-        return Objects.toString(hashCode);
+    public Object getObject() {
+        return objectReference.getObject();
+    }
+
+    @Override
+    public int getHashCode() {
+        return objectReference.getHashCode();
     }
 
     @Override
@@ -94,12 +92,6 @@ class MessageImpl implements Message {
 
 
     private String getObjectReferenceAsString() {
-        List<String> strings = new ArrayList<>();
-        strings.add(hostname);
-        strings.add(Objects.toString(port));
-        strings.add(getObjectName());
-        strings.add(Objects.toString(hashCode));
-
-        return StringUtils.join(strings, Protocol.DELIMITER);
+        return objectReference.asString();
     }
 }

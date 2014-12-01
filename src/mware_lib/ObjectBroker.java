@@ -1,34 +1,46 @@
 package mware_lib;
 
+import mware_lib.networking.RequestService;
+
 public class ObjectBroker {
 
     private final String serviceHost;
-    private final int listenPort;
+    private final int nsPort;
     private final boolean debug;
+    private final RequestService requestService;
     protected ReferenceManager referenceManager = new ReferenceManager();
 
-    public ObjectBroker(String serviceHost, int listenPort, boolean debug) {
-
-        // todo really do stuff
+    public ObjectBroker(String serviceHost, int nsPort, boolean debug) {
         this.serviceHost = serviceHost;
-        this.listenPort = listenPort;
+        this.nsPort = nsPort;
         this.debug = debug;
+
+        this.requestService = new RequestService(this);
+
+        Thread thread = new Thread(requestService);
+        thread.start();
     }
 
     public static ObjectBroker init(String serviceHost,
                                     int listenPort,
                                     boolean debug) {
-        // todo something todo here?
         return new ObjectBroker(serviceHost, listenPort, debug);
     }
 
     public NameService getNameService() {
-        // todo implement
-        return new NameServiceProxy("127.0.0.1", 15000, referenceManager);
+        return new NameServiceProxy(serviceHost, nsPort, referenceManager, requestService.getPort());
+    }
+
+    public Skeleton getSkeleton(Object reference) {
+        return referenceManager.getSkeleton(reference);
+    }
+
+    public int getPort() {
+        return requestService.getPort();
     }
 
     public void shutdown() {
-        // todo implement shutdown
+        requestService.shutdown();
     }
 
 }

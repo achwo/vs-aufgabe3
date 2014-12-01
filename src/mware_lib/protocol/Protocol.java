@@ -6,13 +6,15 @@ import mware_lib.protocol.exceptions.InvalidMessageException;
 
 public class Protocol {
 
-    public static final NullMessage NULL_MESSAGE = new NullMessage();
-    public static final String REGEX_DELIMITER = "\\|";
     public static final String RETURN = "return";
     public static final String EXCEPTION = "exception";
     public static final String CALL_DELIMITER = "!";
     public static final String DELIMITER = "|";
+    public static final String REGEX_DELIMITER = "\\|";
+    public static final String OBJECT_DELIMITER = ":";
+    public static final String REGEX_OBJECT_DELIMITER = "\\:";
     private static final ReturnValue NULL_RETURN = new NullReturnValue();
+    private static final NullMessage NULL_MESSAGE = new NullMessage();
 
     public static Message message(String message) throws InvalidMessageException {
         return new MessageImpl(message);
@@ -49,6 +51,22 @@ public class Protocol {
         return NULL_RETURN;
     }
 
+    public static Message messageFromParts(String objectReference, String deposit, Object... args) {
+        return new MessageImpl(objectReference, deposit, args);
+    }
+
+    public static ObjectReference objectReference(Object servant, String hostname, int port) {
+        return new ObjectReferenceFromParts(servant, hostname, port);
+    }
+
+    public static ObjectReference objectReferenceFromMessage(String message) {
+        return new ObjectReferenceFromMessage(message);
+    }
+
+    public static Class<?> wrap(Class<?> primitive) {
+        return ProtocolHelper.wrapPrimitive(primitive);
+    }
+
     private static class NullMessage implements Message {
 
         @Override
@@ -67,8 +85,13 @@ public class Protocol {
         }
 
         @Override
-        public String getHashCode() {
+        public Object getObject() {
             return null;
+        }
+
+        @Override
+        public int getHashCode() {
+            return 0;
         }
 
         @Override

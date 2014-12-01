@@ -21,7 +21,7 @@ public class NameServiceProxyTest {
         testManager = new TestReferenceManager();
         nameService = new name_service.NameService(PORT);
         new Thread(nameService).start();
-        nameServiceProxy = new NameServiceProxy("127.0.0.1", PORT, testManager);
+        nameServiceProxy = new NameServiceProxy("127.0.0.1", PORT, testManager, 20000);
         testObject = "servant";
     }
 
@@ -33,7 +33,7 @@ public class NameServiceProxyTest {
     @Test
     public void testBindObjectToNameServiceSavesName() throws Exception {
         nameServiceProxy.rebind(testObject, "name");
-        assertEquals(testObject, nameServiceProxy.resolve("name"));
+        assertEquals("127.0.0.1:20000:servant:1984145937", nameServiceProxy.resolve("name"));
     }
 
     @Test

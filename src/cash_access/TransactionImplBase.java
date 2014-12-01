@@ -8,6 +8,6 @@ public abstract class TransactionImplBase {
     public abstract double getBalance(String accountID)
         throws InvalidParamException;
     public static TransactionImplBase narrowCast(Object rawObjectRef) {
-        return null; //todo implement
+        return new TransactionImplProxy((String) rawObjectRef);
     }
 }

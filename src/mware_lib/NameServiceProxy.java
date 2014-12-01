@@ -2,34 +2,35 @@ package mware_lib;
 
 import mware_lib.networking.Request;
 import mware_lib.protocol.Message;
+import mware_lib.protocol.ObjectReference;
 import mware_lib.protocol.Protocol;
 import mware_lib.protocol.ReturnValue;
-import sun.misc.resources.Messages_sv;
-
-import java.io.*;
-import java.net.Socket;
 
 public class NameServiceProxy extends NameService {
 
     private final String nameServiceHost;
     private final int nameServicePort;
     private final ReferenceManager referenceManager;
+    private int localPort;
 
     public NameServiceProxy(String nameServiceHost,
                             int nameServicePort,
-                            ReferenceManager referenceManager) {
+                            ReferenceManager referenceManager,
+                            int localPort) {
         this.nameServiceHost = nameServiceHost;
         this.nameServicePort = nameServicePort;
         this.referenceManager = referenceManager;
+        this.localPort = localPort;
     }
 
     @Override
     public void rebind(Object servant, String name) {
-        referenceManager.putSkeleton(servant, new Skeleton(servant));
+        ObjectReference ref = Protocol.objectReference(servant, "127.0.0.1", localPort);
 
+        referenceManager.putSkeleton(ref.getObjectName(), new Skeleton(servant));
         Message message =
                 Protocol.messageFromParts(nameServiceHost, nameServicePort,
-                        "nameservice", "rebind", servant, name);
+                        "nameservice", "rebind", ref.asString(), name);
         request(message.asString());
 
     }

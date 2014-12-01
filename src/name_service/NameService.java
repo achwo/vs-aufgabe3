@@ -74,10 +74,6 @@ public class NameService implements Runnable {
             out.flush();
 
             socket.close();
-            // 1. nachricht auseinandernehmen
-            // "127.0.0.1|15000|NameService!woher|rebind|servant|name";
-            // split: Nachricht -> Objektreferenz | Aufruf
-            // split: Aufruf -> Methode | Params...
         }
     }
 

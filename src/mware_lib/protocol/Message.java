@@ -4,7 +4,10 @@ public interface Message {
     String getHostname();
     int getPort();
     String getObjectName();
-    String getHashCode();
+
+    Object getObject();
+
+    int getHashCode();
     String getMethodCallAsString();
     String asString();
 }

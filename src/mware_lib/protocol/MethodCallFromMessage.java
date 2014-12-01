@@ -3,15 +3,14 @@ package mware_lib.protocol;
 import com.sun.deploy.util.StringUtils;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class MethodCallFromMessage implements MethodCall {
     private final String methodName;
     private String[] stringParams;
     private Method method;
     private Object[] params;
+
 
     protected MethodCallFromMessage(String message) {
         String[] parts = message.split("\\|", 2);
@@ -25,6 +24,8 @@ public class MethodCallFromMessage implements MethodCall {
         for (Class<?> paramType : method.getParameterTypes()) {
             Method valueOf;
             try {
+                // todo primitives must be objects!
+                if(paramType.isPrimitive()) paramType = Protocol.wrap(paramType);
                 valueOf = paramType.getMethod("valueOf", String.class);
                 returnObjects[i] = valueOf.invoke(null, stringParams[i]);
             } catch (NoSuchMethodException e) {
