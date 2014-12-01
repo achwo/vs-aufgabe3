@@ -1,12 +1,9 @@
 package mware_lib.protocol;
 
-import java.util.Objects;
-
 public class ObjectReferenceFromMessage implements ObjectReference {
     private final String hostname;
     private final Integer port;
     private final String objectName;
-    private final Object object;
     private final int hashCode;
     private final String message;
 
@@ -15,10 +12,8 @@ public class ObjectReferenceFromMessage implements ObjectReference {
         String[] split = message.split(Protocol.REGEX_OBJECT_DELIMITER);
         this.hostname = split[0];
         this.port = Integer.valueOf(split[1]);
-
-        this.object = split[2]; // todo hier muss ein echtes object gesetzt werden.
-        this.objectName = Objects.toString(object);
-        this.hashCode = object.hashCode();
+        this.objectName = split[2];
+        this.hashCode = Integer.valueOf(split[3]);
 
     }
 
@@ -30,11 +25,6 @@ public class ObjectReferenceFromMessage implements ObjectReference {
     @Override
     public int getPort() {
         return port;
-    }
-
-    @Override
-    public Object getObject() {
-        return object;
     }
 
     @Override
@@ -50,5 +40,10 @@ public class ObjectReferenceFromMessage implements ObjectReference {
     @Override
     public String getObjectName() {
         return objectName;
+    }
+
+    @Override
+    public String toString() {
+        return asString();
     }
 }

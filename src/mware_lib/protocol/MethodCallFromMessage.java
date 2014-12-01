@@ -3,16 +3,18 @@ package mware_lib.protocol;
 import com.sun.deploy.util.StringUtils;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class MethodCallFromMessage implements MethodCall {
     private final String methodName;
-    private String[] stringParams;
+    private final String[] stringParams;
     private Method method;
     private Object[] params;
 
 
-    protected MethodCallFromMessage(String message) {
+    MethodCallFromMessage(String message) {
         String[] parts = message.split("\\|", 2);
         methodName = parts[0];
         stringParams = parts[1].split("\\|");
@@ -24,8 +26,8 @@ public class MethodCallFromMessage implements MethodCall {
         for (Class<?> paramType : method.getParameterTypes()) {
             Method valueOf;
             try {
-                // todo primitives must be objects!
-                if(paramType.isPrimitive()) paramType = Protocol.wrap(paramType);
+                if (paramType.isPrimitive())
+                    paramType = Protocol.wrap(paramType);
                 valueOf = paramType.getMethod("valueOf", String.class);
                 returnObjects[i] = valueOf.invoke(null, stringParams[i]);
             } catch (NoSuchMethodException e) {
@@ -40,7 +42,7 @@ public class MethodCallFromMessage implements MethodCall {
 
     @Override
     public Method getMethod(Class<?> type) {
-        if(method == null) {
+        if (method == null) {
             method = ProtocolHelper.findMethod(methodName, type);
         }
         return method;
@@ -48,7 +50,7 @@ public class MethodCallFromMessage implements MethodCall {
 
     @Override
     public Object[] getParams(Class<?> type) {
-        if(params == null) {
+        if (params == null) {
             params = findMethodParams(stringParams, getMethod(type));
         }
         return params;
@@ -59,10 +61,15 @@ public class MethodCallFromMessage implements MethodCall {
         List<String> strings = new ArrayList<>();
         strings.add(methodName);
 
-        for(Object o: stringParams) {
+        for (Object o : stringParams) {
             strings.add(Objects.toString(o));
         }
 
         return StringUtils.join(strings, "|");
+    }
+
+    @Override
+    public String toString() {
+        return asString();
     }
 }

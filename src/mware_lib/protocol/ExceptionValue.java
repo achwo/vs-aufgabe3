@@ -1,4 +1,10 @@
 package mware_lib.protocol;
 
-public class ExceptionValue {
+interface ExceptionValue<E> {
+
+    public E getValue();
+
+    public Class<E> getType();
+
+    public String asString();
 }

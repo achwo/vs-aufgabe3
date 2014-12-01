@@ -8,9 +8,9 @@ public class ObjectBroker {
     private final int nsPort;
     private final boolean debug;
     private final RequestService requestService;
-    protected ReferenceManager referenceManager = new ReferenceManager();
+    private final ReferenceManager referenceManager = new ReferenceManager();
 
-    public ObjectBroker(String serviceHost, int nsPort, boolean debug) {
+    private ObjectBroker(String serviceHost, int nsPort, boolean debug) {
         this.serviceHost = serviceHost;
         this.nsPort = nsPort;
         this.debug = debug;

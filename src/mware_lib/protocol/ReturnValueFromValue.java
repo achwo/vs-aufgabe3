@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class ReturnValueFromValue<E> implements ReturnValue<E> {
 
+    private final E value;
     private String message;
-    private E value;
 
     public ReturnValueFromValue(E value) {
         this.value = value;
@@ -18,7 +18,7 @@ public class ReturnValueFromValue<E> implements ReturnValue<E> {
 
     @Override
     public String asString() {
-        if(message == null) createMessage();
+        if (message == null) createMessage();
         return message;
     }
 
@@ -26,4 +26,8 @@ public class ReturnValueFromValue<E> implements ReturnValue<E> {
         message = String.join(Protocol.DELIMITER, Protocol.RETURN, Objects.toString(value));
     }
 
+    @Override
+    public String toString() {
+        return asString();
+    }
 }

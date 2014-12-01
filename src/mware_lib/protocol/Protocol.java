@@ -39,7 +39,7 @@ public class Protocol {
         return new ReturnValueFromMessage<>(message, type);
     }
 
-    public static <E> ReturnValue<E> returnValue(E value) throws IllegalTypeException {
+    public static <E> ReturnValue<E> returnValue(E value) {
         return new ReturnValueFromValue<>(value);
     }
 
@@ -47,6 +47,7 @@ public class Protocol {
     public static Message nullMessage() {
         return NULL_MESSAGE;
     }
+
     public static ReturnValue nullReturnValue() {
         return NULL_RETURN;
     }
@@ -67,6 +68,11 @@ public class Protocol {
         return ProtocolHelper.wrapPrimitive(primitive);
     }
 
+
+    public static ExceptionValue<?> exceptionValueFromMessage(String message) {
+        return new ExceptionValueFromMessage<>(message);
+    }
+
     private static class NullMessage implements Message {
 
         @Override
@@ -85,11 +91,6 @@ public class Protocol {
         }
 
         @Override
-        public Object getObject() {
-            return null;
-        }
-
-        @Override
         public int getHashCode() {
             return 0;
         }
@@ -103,6 +104,11 @@ public class Protocol {
         public String asString() {
             return null;
         }
+
+        @Override
+        public String toString() {
+            return "NullMessage";
+        }
     }
 
     private static class NullReturnValue implements ReturnValue<Object> {
@@ -114,6 +120,11 @@ public class Protocol {
         @Override
         public String asString() {
             return null;
+        }
+
+        @Override
+        public String toString() {
+            return "NullReturnValue";
         }
     }
 }

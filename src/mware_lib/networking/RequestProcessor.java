@@ -4,12 +4,11 @@ import mware_lib.ObjectBroker;
 import mware_lib.Skeleton;
 import mware_lib.protocol.Message;
 import mware_lib.protocol.Protocol;
-import mware_lib.protocol.exceptions.InvalidMessageException;
 
 import java.io.*;
 import java.net.Socket;
 
-public class RequestProcessor implements Runnable {
+class RequestProcessor implements Runnable {
 
     private final Socket socket;
     private final ObjectBroker broker;
@@ -37,7 +36,7 @@ public class RequestProcessor implements Runnable {
             out.newLine();
             out.flush();
 
-        socket.close();
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

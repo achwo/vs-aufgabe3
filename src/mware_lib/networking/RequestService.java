@@ -9,16 +9,13 @@ import java.net.Socket;
 public class RequestService implements Runnable {
 
     private final ObjectBroker broker;
-    private final Integer port;
     private ServerSocket serverSocket;
-    private boolean running = false;
 
     public RequestService(ObjectBroker broker, Integer port) {
         this.broker = broker;
-        this.port = port;
 
         try {
-            this.serverSocket = new ServerSocket(this.port);
+            this.serverSocket = new ServerSocket(port);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,8 +31,8 @@ public class RequestService implements Runnable {
 
     @Override
     public void run() {
-        running = true;
-        while(running) {
+        boolean running = true;
+        while (running) {
             try {
                 Socket socket = serverSocket.accept();
                 new Thread(new RequestProcessor(socket, broker)).start();

@@ -1,14 +1,10 @@
 package cash_access;
 
-import mware_lib.networking.Request;
-import mware_lib.protocol.Message;
 import mware_lib.protocol.Protocol;
 import mware_lib.protocol.ReturnValue;
-import mware_lib.protocol.exceptions.IllegalTypeException;
-import mware_lib.protocol.exceptions.InvalidMessageException;
 
 public class TransactionImplProxy extends TransactionImplBase {
-    private String objectReference;
+    private final String objectReference;
 
     public TransactionImplProxy(String rawObjRef) {
         this.objectReference = rawObjRef;

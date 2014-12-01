@@ -1,9 +1,9 @@
 package name_service;
 
 import mware_lib.Skeleton;
-import mware_lib.protocol.exceptions.InvalidMessageException;
 import mware_lib.protocol.Message;
 import mware_lib.protocol.Protocol;
+import mware_lib.protocol.exceptions.InvalidMessageException;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -14,16 +14,18 @@ import java.util.Map;
 public class NameService implements Runnable {
 
     private final NameServiceRequestService requestService;
-    private Map<String, Object> names = new HashMap<>();
+    private final Map<String, Object> names = new HashMap<>();
 
     public NameService(int port) {
         this.requestService = new NameServiceRequestService(port, this);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void rebind(Object servant, String name) {
         names.put(name, servant);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public Object resolve(String name) {
         return names.get(name);
     }
@@ -45,9 +47,9 @@ public class NameService implements Runnable {
 
     }
 
-    // erhaelt ueber socket ne message und wandelt sie in aufrufe um
+    // gets message via socket and converts them to method calls
     private class NameServiceRequestProcessor {
-        public NameServiceRequestProcessor(Socket socket, NameService nameService) throws IOException{
+        public NameServiceRequestProcessor(Socket socket, NameService nameService) throws IOException {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String line = in.readLine();
 
@@ -62,7 +64,7 @@ public class NameService implements Runnable {
             Skeleton skeleton = new Skeleton(nameService);
             String result = "";
             try {
-                    result = skeleton.invoke(methodCall);
+                result = skeleton.invoke(methodCall);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -77,10 +79,10 @@ public class NameService implements Runnable {
         }
     }
 
-    // hoert auf eingehende verbindungen und delegiert die verbindung
+    // listens for incoming connections and delegates the connection to request processor
     private class NameServiceRequestService implements Runnable {
         private final int port;
-        private NameService nameService;
+        private final NameService nameService;
         private ServerSocket serverSocket;
         private boolean running;
 
@@ -99,7 +101,7 @@ public class NameService implements Runnable {
             running = true;
             try {
 
-                while(running) {
+                while (running) {
                     Socket socket = serverSocket.accept();
                     new NameServiceRequestProcessor(socket, nameService);
                 }

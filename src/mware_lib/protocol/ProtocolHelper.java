@@ -5,8 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class ProtocolHelper {
-    private static Map<Class<?>, Class<?>> wrappedPrimitives = new HashMap<>();
+class ProtocolHelper {
+    private static final Map<Class<?>, Class<?>> wrappedPrimitives = new HashMap<>();
+
     static {
         wrappedPrimitives.put(boolean.class, Boolean.class);
         wrappedPrimitives.put(byte.class, Byte.class);
@@ -20,7 +21,7 @@ public class ProtocolHelper {
     }
 
     static Method findMethod(String methodName, Class subject) {
-        for(Method m: subject.getMethods())
+        for (Method m : subject.getMethods())
             if (Objects.equals(m.getName(), methodName)) return m;
         return null;
     }

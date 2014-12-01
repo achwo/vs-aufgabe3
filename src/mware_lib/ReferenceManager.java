@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class ReferenceManager {
 
-    private Map<Object, Skeleton> references = new HashMap<>();
+    private final Map<Object, Skeleton> references = new HashMap<>();
 
     public void putSkeleton(Object reference, Skeleton skeleton) {
         references.put(reference, skeleton);

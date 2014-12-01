@@ -1,13 +1,13 @@
 package mware_lib;
 
-import mware_lib.protocol.Protocol;
 import mware_lib.protocol.MethodCall;
+import mware_lib.protocol.Protocol;
 import mware_lib.protocol.ReturnValue;
 
 import java.lang.reflect.Method;
 
 public class Skeleton {
-    private Object servant;
+    private final Object servant;
 
     public Skeleton(Object servant) {
         this.servant = servant;

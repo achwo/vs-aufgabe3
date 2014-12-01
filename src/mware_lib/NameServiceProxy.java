@@ -13,7 +13,7 @@ public class NameServiceProxy extends NameService {
 
     private final ReferenceManager referenceManager;
     private final String objectReference;
-    private int localPort;
+    private final int localPort;
 
     public NameServiceProxy(
             String nameServiceHost, int nameServicePort,

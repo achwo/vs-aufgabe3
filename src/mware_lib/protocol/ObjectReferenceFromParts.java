@@ -24,11 +24,6 @@ public class ObjectReferenceFromParts implements ObjectReference {
     }
 
     @Override
-    public Object getObject() {
-        return object;
-    }
-
-    @Override
     public int getHashCode() {
         return object.hashCode();
     }
@@ -45,5 +40,10 @@ public class ObjectReferenceFromParts implements ObjectReference {
     @Override
     public String getObjectName() {
         return Objects.toString(object);
+    }
+
+    @Override
+    public String toString() {
+        return asString();
     }
 }

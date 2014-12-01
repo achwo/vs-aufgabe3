@@ -20,7 +20,7 @@ public class MessageTest {
         assertEquals("127.0.0.1", messageFromString.getHostname());
         assertEquals(15000, messageFromString.getPort());
         assertEquals("nameService", messageFromString.getObjectName());
-        assertEquals("123456", messageFromString.getHashCode());
+        assertEquals(123456, messageFromString.getHashCode());
         assertEquals("rebind|servant|name", messageFromString.getMethodCallAsString());
     }
 

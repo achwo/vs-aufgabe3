@@ -23,7 +23,7 @@ public class ReturnValueFromMessage<E> implements ReturnValue<E> {
 
     @Override
     public E getValue() throws InvalidMessageException {
-        if(value == null) deserialize();
+        if (value == null) deserialize();
         return value;
     }
 
@@ -41,9 +41,9 @@ public class ReturnValueFromMessage<E> implements ReturnValue<E> {
 
         String[] parts = message.split(Protocol.REGEX_DELIMITER);
 
-        if(!message.startsWith(Protocol.RETURN))
+        if (!message.startsWith(Protocol.RETURN))
             throw new InvalidMessageException("Wrong message type");
-        if(parts.length < 1)
+        if (parts.length < 1)
             throw new InvalidMessageException("No return value found");
 
         String value = parts.length > 1 ? parts[1] : "";
@@ -58,5 +58,10 @@ public class ReturnValueFromMessage<E> implements ReturnValue<E> {
             returnValue = value;
         }
         this.value = (E) returnValue;
+    }
+
+    @Override
+    public String toString() {
+        return asString();
     }
 }

@@ -23,7 +23,7 @@ class MessageImpl implements Message {
     MessageImpl(String message) throws InvalidMessageException {
         String[] split = message.split(Protocol.CALL_DELIMITER);
 
-        if(split.length < 2)
+        if (split.length < 2)
             throw new InvalidMessageException("No Delimiter '" + Protocol.CALL_DELIMITER + "' found.");
 
         methodCall = split[1];
@@ -52,11 +52,6 @@ class MessageImpl implements Message {
     }
 
     @Override
-    public Object getObject() {
-        return objectReference.getObject();
-    }
-
-    @Override
     public int getHashCode() {
         return objectReference.getHashCode();
     }
@@ -68,7 +63,7 @@ class MessageImpl implements Message {
 
     @Override
     public String asString() {
-        if(message == null) buildMessage();
+        if (message == null) buildMessage();
         return message;
     }
 
@@ -83,7 +78,7 @@ class MessageImpl implements Message {
         List<String> strings = new ArrayList<>();
         strings.add(methodName);
 
-        for(Object o: args) {
+        for (Object o : args) {
             strings.add(Objects.toString(o));
         }
 
@@ -93,5 +88,10 @@ class MessageImpl implements Message {
 
     private String getObjectReferenceAsString() {
         return objectReference.asString();
+    }
+
+    @Override
+    public String toString() {
+        return asString();
     }
 }
