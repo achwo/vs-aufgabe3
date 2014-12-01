@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 public class NameServiceProxyTest {
@@ -33,7 +34,8 @@ public class NameServiceProxyTest {
     @Test
     public void testBindObjectToNameServiceSavesName() throws Exception {
         nameServiceProxy.rebind(testObject, "name");
-        assertEquals("127.0.0.1:20000:servant:1984145937", nameServiceProxy.resolve("name"));
+        Object result = nameServiceProxy.resolve("name");
+        assertTrue(((String) result).contains("20000:servant:1984145937"));
     }
 
     @Test

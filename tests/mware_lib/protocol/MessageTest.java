@@ -11,7 +11,7 @@ public class MessageTest {
 
     @Before
     public void setUp() throws Exception {
-        String string = "127.0.0.1|15000|nameService|123456!rebind|servant|name";
+        String string = "127.0.0.1:15000:nameService:123456!rebind|servant|name";
         messageFromString = Protocol.message(string);
     }
 
@@ -29,7 +29,7 @@ public class MessageTest {
         Message messageFromParts =
                 Protocol.messageFromParts("127.0.0.1", 15000, "hallo", "startsWith", "h", 15);
 
-        String expected = "127.0.0.1|15000|hallo|99043158!startsWith|h|15";
+        String expected = "127.0.0.1:15000:hallo:99043158!startsWith|h|15";
 
         assertEquals("127.0.0.1", messageFromParts.getHostname());
         assertEquals(15000, messageFromParts.getPort());

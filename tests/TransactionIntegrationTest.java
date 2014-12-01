@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
 
-public class TransactionImplBaseIntegrationTest {
+public class TransactionIntegrationTest {
 
     private String accountName;
 

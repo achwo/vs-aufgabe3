@@ -8,10 +8,7 @@ public class ExceptionValueTest {
 
     @Test
     public void testName() throws Exception {
-        // Arrange
-        // Act
-        // Assert
-        assertEquals(true, false);
+        fail();
     }
 
     // todo exception|type ?

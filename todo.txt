@@ -1,6 +1,5 @@
 Backlog
 =======
 - ManagerImpl Integration Test
-- TransactionImpl Integration Test
 - AccountImpl Integration Test
 - Test mit Schulz' Testklassen
