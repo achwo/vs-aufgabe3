@@ -1,6 +1,6 @@
 package mware_lib.protocol;
 
-public interface ExceptionValue<E> {
+public interface ExceptionValue<E extends Throwable> {
 
     public E getValue();
 

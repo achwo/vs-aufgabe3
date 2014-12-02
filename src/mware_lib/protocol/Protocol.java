@@ -69,8 +69,12 @@ public class Protocol {
     }
 
 
-    public static ExceptionValue<?> exceptionValueFromMessage(String message) {
+    public static <E extends Throwable> ExceptionValue<E> exceptionValueFromMessage(String message, Class<E> exceptionClass) throws InvalidMessageException {
         return new ExceptionValueFromMessage<>(message);
+    }
+
+    public static <E extends Throwable> ExceptionValue<E> exceptionValue(E e, Class<E> type) {
+        return new ExceptionValueFromThrowable<>(e, type);
     }
 
     private static class NullMessage implements Message {
