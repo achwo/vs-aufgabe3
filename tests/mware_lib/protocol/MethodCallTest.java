@@ -25,22 +25,35 @@ public class MethodCallTest {
 
     @Test
     public void testFromMethod() throws Exception {
-        MethodCall methodCall = Protocol.methodCall("add", 1, 2);
+        String methodName = "add";
+        MethodCall methodCall = Protocol.methodCall(methodName, 1, 2);
 
-        Method expected = TestObject.class.getMethod("add", Integer.class, Integer.class);
+        Method expected = TestObject.class.getMethod(methodName, Integer.class, Integer.class);
 
         assertEquals(expected, methodCall.getMethod(TestObject.class));
-        assertEquals("add|1|2", methodCall.asString());
+        assertEquals(methodName + "|1|2", methodCall.asString());
+    }
+
+    @Test
+    public void testNoParamsFromMessage() throws Exception {
+        String methodName = "remove";
+        MethodCall methodCall = Protocol.methodCallFromMessage(methodName);
+
+        Method expected = TestObject.class.getMethod(methodName);
+
+        assertEquals(expected, methodCall.getMethod(TestObject.class));
+        assertEquals(methodName, methodCall.asString());
+
     }
 
     @Test
     public void testNoParams() throws Exception {
-        MethodCall methodCall = Protocol.methodCallFromMessage("remove");
-
-        Method expected = TestObject.class.getMethod("remove");
+        String methodName = "remove";
+        MethodCall methodCall = Protocol.methodCall(methodName);
+        Method expected = TestObject.class.getMethod(methodName);
 
         assertEquals(expected, methodCall.getMethod(TestObject.class));
-        assertEquals("remove", methodCall.asString());
+        assertEquals(methodName, methodCall.asString());
 
     }
 
