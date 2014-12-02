@@ -1,5 +1,6 @@
 package mware_lib.protocol;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
@@ -8,52 +9,55 @@ import static org.junit.Assert.*;
 
 public class MethodCallTest {
 
+    private String messageWithParams;
+    private Method expectedWithParams;
+    private String methodNameWithoutParams;
+    private String methodNameWithParams;
+    private Method expectedWithoutParams;
+
+    @Before
+    public void setUp() throws Exception {
+        methodNameWithParams = "add";
+        messageWithParams = methodNameWithParams + "|1|2";
+        expectedWithParams = TestObject.class.getMethod(methodNameWithParams, Integer.class, Integer.class);
+
+        methodNameWithoutParams = "remove";
+        expectedWithoutParams = TestObject.class.getMethod(methodNameWithoutParams);
+    }
 
     @Test
     public void testFromMessage() throws Exception {
-        String message = "add|1|2";
+        MethodCall methodCallWithParamsFromMsg = Protocol.methodCallFromMessage(messageWithParams);
 
-        MethodCall methodCall = Protocol.methodCallFromMessage(message);
-
-        Method expected = TestObject.class.getMethod("add", Integer.class, Integer.class);
-
-        assertEquals(expected, methodCall.getMethod(TestObject.class));
-        assertEquals(1, methodCall.getParams(TestObject.class)[0]);
-        assertEquals(2, methodCall.getParams(TestObject.class)[1]);
-        assertEquals(message, methodCall.asString());
+        assertEquals(expectedWithParams, methodCallWithParamsFromMsg.getMethod(TestObject.class));
+        assertEquals(1, methodCallWithParamsFromMsg.getParams(TestObject.class)[0]);
+        assertEquals(2, methodCallWithParamsFromMsg.getParams(TestObject.class)[1]);
+        assertEquals(messageWithParams, methodCallWithParamsFromMsg.asString());
     }
 
     @Test
     public void testFromMethod() throws Exception {
-        String methodName = "add";
-        MethodCall methodCall = Protocol.methodCall(methodName, 1, 2);
+        MethodCall methodCallWithParams = Protocol.methodCall(methodNameWithParams, 1, 2);
 
-        Method expected = TestObject.class.getMethod(methodName, Integer.class, Integer.class);
-
-        assertEquals(expected, methodCall.getMethod(TestObject.class));
-        assertEquals(methodName + "|1|2", methodCall.asString());
+        assertEquals(expectedWithParams, methodCallWithParams.getMethod(TestObject.class));
+        assertEquals(messageWithParams, methodCallWithParams.asString());
     }
 
     @Test
     public void testNoParamsFromMessage() throws Exception {
-        String methodName = "remove";
-        MethodCall methodCall = Protocol.methodCallFromMessage(methodName);
+        MethodCall methodCall = Protocol.methodCallFromMessage(methodNameWithoutParams);
 
-        Method expected = TestObject.class.getMethod(methodName);
-
-        assertEquals(expected, methodCall.getMethod(TestObject.class));
-        assertEquals(methodName, methodCall.asString());
+        assertEquals(expectedWithoutParams, methodCall.getMethod(TestObject.class));
+        assertEquals(methodNameWithoutParams, methodCall.asString());
 
     }
 
     @Test
     public void testNoParams() throws Exception {
-        String methodName = "remove";
-        MethodCall methodCall = Protocol.methodCall(methodName);
-        Method expected = TestObject.class.getMethod(methodName);
+        MethodCall methodCall = Protocol.methodCall(methodNameWithoutParams);
 
-        assertEquals(expected, methodCall.getMethod(TestObject.class));
-        assertEquals(methodName, methodCall.asString());
+        assertEquals(expectedWithoutParams, methodCall.getMethod(TestObject.class));
+        assertEquals(methodNameWithoutParams, methodCall.asString());
 
     }
 
