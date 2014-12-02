@@ -1,8 +1,9 @@
 package bank_access;
 
 
+import mware_lib.Proxy;
 
-public abstract class AccountImplBase {
+public abstract class AccountImplBase extends Proxy{
     public static AccountImplBase narrowCast(Object rawObjectRef) {
         return new AccountImplProxy((String) rawObjectRef);
     }
