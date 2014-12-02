@@ -11,4 +11,11 @@ public abstract class Proxy {
                 new Request(message.getHostname(), message.getPort(), message.asString());
         return request.invoke();
     }
+
+    protected String sendMessage(String objectReference, String methodName) {
+        Message message = Protocol.messageFromParts(objectReference, methodName);
+        Request request =
+                new Request(message.getHostname(), message.getPort(), message.asString());
+        return request.invoke();
+    }
 }
