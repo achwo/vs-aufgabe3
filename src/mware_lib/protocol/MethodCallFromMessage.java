@@ -65,7 +65,7 @@ class MethodCallFromMessage implements MethodCall {
             strings.add(Objects.toString(o));
         }
 
-        return StringUtils.join(strings, "|");
+        return StringUtils.join(strings, Protocol.DELIMITER);
     }
 
     @Override
