@@ -16,6 +16,12 @@ public class NameService implements Runnable {
     private final NameServiceRequestService requestService;
     private final Map<String, Object> names = new HashMap<>();
 
+    public static void main(String[] args) {
+        NameService ns = new name_service.NameService(15000);
+        Thread nsThread = new Thread(ns);
+        nsThread.start();
+    }
+
     public NameService(int port) {
         this.requestService = new NameServiceRequestService(port, this);
     }
