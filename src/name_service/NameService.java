@@ -17,6 +17,7 @@ public class NameService implements Runnable {
     private final Map<String, Object> names = new HashMap<>();
 
     public static void main(String[] args) {
+        // todo use port from args
         NameService ns = new name_service.NameService(15000);
         Thread nsThread = new Thread(ns);
         nsThread.start();
