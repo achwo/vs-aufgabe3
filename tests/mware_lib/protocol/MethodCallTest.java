@@ -33,8 +33,20 @@ public class MethodCallTest {
         assertEquals("add|1|2", methodCall.asString());
     }
 
+    @Test
+    public void testNoParams() throws Exception {
+        MethodCall methodCall = Protocol.methodCallFromMessage("remove");
+
+        Method expected = TestObject.class.getMethod("remove");
+
+        assertEquals(expected, methodCall.getMethod(TestObject.class));
+        assertEquals("remove", methodCall.asString());
+
+    }
+
     @SuppressWarnings("UnusedDeclaration")
     private class TestObject {
         public void add(Integer i, Integer j) {}
+        public void remove() {}
     }
 }

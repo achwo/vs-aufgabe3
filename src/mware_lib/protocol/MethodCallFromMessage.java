@@ -4,6 +4,7 @@ import com.sun.deploy.util.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ class MethodCallFromMessage implements MethodCall {
     MethodCallFromMessage(String message) {
         String[] parts = message.split("\\|", 2);
         methodName = parts[0];
-        stringParams = parts[1].split("\\|");
+        stringParams = parts.length > 1 ? parts[1].split("\\|") : new String[0];
     }
 
     private Object[] findMethodParams(String[] stringParams, Method method) {
