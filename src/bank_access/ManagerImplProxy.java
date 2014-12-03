@@ -1,5 +1,6 @@
 package bank_access;
 
+import mware_lib.InvalidParamException;
 import mware_lib.protocol.Protocol;
 import mware_lib.protocol.ReturnValue;
 
@@ -16,7 +17,7 @@ public class ManagerImplProxy extends ManagerImplBase {
 
     @Override
     public String createAccount(String owner, String branch) throws InvalidParamException {
-     sendMessage(objectReference, "transfer", amount);
+     return null; //sendMessage(objectReference, "transfer", amount);
 
     }
 }
