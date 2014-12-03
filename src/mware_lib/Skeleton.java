@@ -1,9 +1,12 @@
 package mware_lib;
 
+import cash_access.InvalidParamException;
+import mware_lib.protocol.ExceptionValue;
 import mware_lib.protocol.MethodCall;
 import mware_lib.protocol.Protocol;
 import mware_lib.protocol.ReturnValue;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class Skeleton {
@@ -19,16 +22,23 @@ public class Skeleton {
 
         Method method = deserializer.getMethod(servant.getClass());
         Object[] args = deserializer.getParams(servant.getClass());
-        String value = "";
+        method.setAccessible(true);
+        Object result = null;
         try {
-            method.setAccessible(true);
-            Object result = method.invoke(servant, args);
-            ReturnValue<Object> returnValue = Protocol.returnValue(result);
-            value = returnValue.asString();
-        } catch (Exception e) {
+            result = method.invoke(servant, args);
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            if(e.getCause() instanceof InvalidParamException) {
+                ExceptionValue<InvalidParamException> exceptionValue =
+                        Protocol.exceptionValue(
+                                (InvalidParamException) e.getCause(),
+                                InvalidParamException.class);
+                return exceptionValue.asString();
+            } else e.printStackTrace();
         }
+        ReturnValue<Object> returnValue = Protocol.returnValue(result);
 
-        return value;
+        return returnValue.asString();
     }
 }

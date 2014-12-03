@@ -1,7 +1,5 @@
 package mware_lib.protocol;
 
-import mware_lib.protocol.exceptions.IllegalTypeException;
-import mware_lib.protocol.exceptions.InvalidMessageException;
 
 
 public class Protocol {
@@ -16,7 +14,7 @@ public class Protocol {
     private static final ReturnValue NULL_RETURN = new NullReturnValue();
     private static final NullMessage NULL_MESSAGE = new NullMessage();
 
-    public static Message message(String message) throws InvalidMessageException {
+    public static Message message(String message) {
         return new MessageImpl(message);
     }
 
@@ -33,16 +31,6 @@ public class Protocol {
     public static MethodCall methodCall(String methodName, Object... args) {
         return new MethodCallFromMethodWithParams(methodName, args);
     }
-
-    public static <E> ReturnValue<E> returnValueFromMessage(
-            String message, Class<E> type) throws IllegalTypeException {
-        return new ReturnValueFromMessage<>(message, type);
-    }
-
-    public static <E> ReturnValue<E> returnValue(E value) {
-        return new ReturnValueFromValue<>(value);
-    }
-
 
     public static Message nullMessage() {
         return NULL_MESSAGE;
@@ -68,8 +56,23 @@ public class Protocol {
         return ProtocolHelper.wrapPrimitive(primitive);
     }
 
+    public static String returnMessageType(String message) {
+        return ProtocolHelper.returnMessageType(message);
+    }
 
-    public static <E extends Throwable> ExceptionValue<E> exceptionValueFromMessage(String message, Class<E> exceptionClass) throws InvalidMessageException {
+    public static <E> ReturnValue<E> returnValueFromMessage(String message, Class<E> type) {
+        return new ReturnValueFromMessage<>(message, type);
+    }
+
+    public static <E> ReturnValue<E> returnValue(E value) {
+        ReturnValue<E> returnValue;
+        if(value == null) returnValue = nullReturnValue();
+        else returnValue = new ReturnValueFromValue<>(value);
+
+        return returnValue;
+    }
+
+    public static <E extends Throwable> ExceptionValue<E> exceptionValueFromMessage(String message, Class<E> exceptionClass) {
         return new ExceptionValueFromMessage<>(message);
     }
 
@@ -79,9 +82,11 @@ public class Protocol {
 
     private static class NullMessage implements Message {
 
+        private final String nullMessage = "NullMessage";
+
         @Override
         public String getHostname() {
-            return null;
+            return nullMessage;
         }
 
         @Override
@@ -91,7 +96,7 @@ public class Protocol {
 
         @Override
         public String getObjectName() {
-            return null;
+            return nullMessage;
         }
 
         @Override
@@ -101,34 +106,37 @@ public class Protocol {
 
         @Override
         public String getMethodCallAsString() {
-            return null;
+            return nullMessage;
         }
 
         @Override
         public String asString() {
-            return null;
+            return nullMessage;
         }
 
         @Override
         public String toString() {
-            return "NullMessage";
+            return nullMessage;
         }
     }
 
-    private static class NullReturnValue implements ReturnValue<Object> {
+    private static class NullReturnValue implements ReturnValue<String> {
+
+        private final String nullReturnValue = "return|null";
+
         @Override
-        public Object getValue() throws InvalidMessageException {
+        public String getValue() {
             return null;
         }
 
         @Override
         public String asString() {
-            return null;
+            return nullReturnValue;
         }
 
         @Override
         public String toString() {
-            return "NullReturnValue";
+            return nullReturnValue;
         }
     }
 }

@@ -13,7 +13,7 @@ class ReturnValueFromMessage<E> implements ReturnValue<E> {
     private final Class<E> type;
     private E value;
 
-    ReturnValueFromMessage(String message, Class<E> type) throws IllegalTypeException {
+    ReturnValueFromMessage(String message, Class<E> type) {
         if (type.isPrimitive())
             throw new IllegalTypeException("Type must not be primitive");
 
@@ -22,7 +22,7 @@ class ReturnValueFromMessage<E> implements ReturnValue<E> {
     }
 
     @Override
-    public E getValue() throws InvalidMessageException {
+    public E getValue() {
         if (value == null) deserialize();
         return value;
     }
@@ -33,7 +33,7 @@ class ReturnValueFromMessage<E> implements ReturnValue<E> {
     }
 
     @SuppressWarnings("unchecked")
-    private void deserialize() throws InvalidMessageException {
+    private void deserialize() {
         if (message == null || Objects.equals(message, ""))
             throw new InvalidMessageException("Message too short or null");
         if (!Pattern.compile(Protocol.REGEX_DELIMITER).matcher(message).find())

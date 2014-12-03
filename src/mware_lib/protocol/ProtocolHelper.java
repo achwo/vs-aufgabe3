@@ -29,4 +29,12 @@ class ProtocolHelper {
     static Class<?> wrapPrimitive(Class<?> primitive) {
         return wrappedPrimitives.get(primitive);
     }
+
+    static String returnMessageType(String message) {
+        String type = "";
+        if(message.startsWith(Protocol.EXCEPTION)) type = Protocol.EXCEPTION;
+        else if(message.startsWith(Protocol.RETURN)) type = Protocol.RETURN;
+
+        return type;
+    }
 }
