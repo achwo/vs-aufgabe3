@@ -1,11 +1,9 @@
 package bank_access;
 
+import mware_lib.OverdraftException;
 import mware_lib.protocol.Protocol;
 import mware_lib.protocol.ReturnValue;
 
-/**
- * Created by johnstar on 02.12.14.
- */
 public class AccountImplProxy extends AccountImplBase {
     private final String objectReference;
 

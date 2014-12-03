@@ -1,9 +1,10 @@
 package cash_access;
 
 import mware_lib.protocol.ExceptionValue;
-import mware_lib.protocol.Protocol;
 import mware_lib.protocol.ReturnValue;
 import mware_lib.protocol.exceptions.InvalidMessageException;
+import mware_lib.InvalidParamException;
+import mware_lib.OverdraftException;
 
 import java.util.Objects;
 

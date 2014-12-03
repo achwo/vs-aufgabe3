@@ -1,6 +1,5 @@
 package mware_lib;
 
-import cash_access.InvalidParamException;
 import mware_lib.protocol.ExceptionValue;
 import mware_lib.protocol.MethodCall;
 import mware_lib.protocol.Protocol;
