@@ -1,5 +1,5 @@
 import bank_access.AccountImplBase;
-import cash_access.InvalidParamException;
+import mware_lib.InvalidParamException;
 import mware_lib.NameService;
 import mware_lib.ObjectBroker;
 import org.junit.After;
@@ -41,7 +41,7 @@ public class AccountIntegrationTest {
         assertEquals(1000.00, account.getBalance());
     }
 
-
+    // todo test possible exceptions
 
     @After
     public void tearDown() throws Exception {

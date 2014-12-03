@@ -1,5 +1,7 @@
 package bank_access;
 
+import mware_lib.InvalidParamException;
+
 public abstract class ManagerImplBase {
 
 

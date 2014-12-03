@@ -1,6 +1,8 @@
 package cash_access;
 
 import mware_lib.Proxy;
+import mware_lib.InvalidParamException;
+import mware_lib.OverdraftException;
 
 public abstract class TransactionImplBase extends Proxy {
     public static TransactionImplBase narrowCast(Object rawObjectRef) {

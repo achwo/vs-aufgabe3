@@ -1,10 +1,10 @@
 package mware_lib.protocol;
 
-public interface ExceptionValue<E extends Throwable> {
+import mware_lib.protocol.exceptions.InvalidMessageException;
 
-    public E getValue();
+public interface ExceptionValue<E extends Throwable> extends ReturnValue<E> {
 
+    public E getValue() throws InvalidMessageException;
     public Class<E> getType();
-
     public String asString();
 }

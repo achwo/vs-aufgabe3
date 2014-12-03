@@ -1,7 +1,14 @@
 package cash_access;
 
-import mware_lib.protocol.Protocol;
+import mware_lib.protocol.ExceptionValue;
 import mware_lib.protocol.ReturnValue;
+import mware_lib.protocol.exceptions.InvalidMessageException;
+import mware_lib.InvalidParamException;
+import mware_lib.OverdraftException;
+
+import java.util.Objects;
+
+import static mware_lib.protocol.Protocol.*;
 
 public class TransactionImplProxy extends TransactionImplBase {
     private final String objectReference;
@@ -12,7 +19,17 @@ public class TransactionImplProxy extends TransactionImplBase {
 
     @Override
     public void deposit(String accountID, double amount) throws InvalidParamException {
-        sendMessage(objectReference, "deposit", accountID, amount);
+        String returnValue = sendMessage(objectReference, "deposit", accountID, amount);
+
+        if(Objects.equals(returnMessageType(returnValue), EXCEPTION)) {
+            try {
+                ExceptionValue<InvalidParamException> exceptionValue =
+                        exceptionValueFromMessage(returnValue, InvalidParamException.class);
+                throw exceptionValue.getValue();
+            } catch (InvalidMessageException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -25,7 +42,7 @@ public class TransactionImplProxy extends TransactionImplBase {
         String result = sendMessage(objectReference, "getBalance", accountID);
         Double balance = -1.0;
         try {
-            ReturnValue<Double> value = Protocol.returnValueFromMessage(result, Double.class);
+            ReturnValue<Double> value = returnValueFromMessage(result, Double.class);
             balance = value.getValue();
         } catch (Exception e) {
             e.printStackTrace();

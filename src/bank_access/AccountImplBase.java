@@ -1,6 +1,8 @@
 package bank_access;
 
 
+import mware_lib.InvalidParamException;
+import mware_lib.OverdraftException;
 import mware_lib.Proxy;
 
 public abstract class AccountImplBase extends Proxy{
@@ -10,5 +12,5 @@ public abstract class AccountImplBase extends Proxy{
 
     public abstract void transfer(double amount) throws OverdraftException;
 
-    public abstract double getBalance() throws cash_access.InvalidParamException;
+    public abstract double getBalance() throws InvalidParamException;
 }
