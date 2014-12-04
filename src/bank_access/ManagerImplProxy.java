@@ -1,5 +1,6 @@
 package bank_access;
 
+import mware_lib.Logger;
 import mware_lib.protocol.ExceptionValue;
 import mware_lib.protocol.Protocol;
 
@@ -11,7 +12,7 @@ import static mware_lib.protocol.Protocol.returnMessageType;
 
 public class ManagerImplProxy extends ManagerImplBase {
     private final String objectReference;
-
+    private Logger logger = new Logger(this);
     public ManagerImplProxy(String rawObjRef) {
         this.objectReference = rawObjRef;
     }
@@ -19,10 +20,12 @@ public class ManagerImplProxy extends ManagerImplBase {
     @Override
     public String createAccount(String owner, String branch) throws InvalidParamException {
      String returnValue = sendMessage(objectReference, "createAccount", owner, branch);
-
+        logger.log("Called ManagerImplProxy -> createAccount("+owner+","+branch+")");
         throwIfInvalidParamException(returnValue);
 
-        return Protocol.returnValueFromMessage(returnValue, String.class).getValue();
+        String retValue =  Protocol.returnValueFromMessage(returnValue, String.class).getValue();
+        logger.log("Returnvalue: " + retValue);
+        return retValue;
     }
 
     protected void throwIfInvalidParamException(String message) throws InvalidParamException {
