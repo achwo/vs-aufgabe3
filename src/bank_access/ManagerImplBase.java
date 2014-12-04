@@ -1,10 +1,14 @@
 package bank_access;
 
 import mware_lib.InvalidParamException;
+import mware_lib.Proxy;
 
-public abstract class ManagerImplBase {
+public abstract class ManagerImplBase extends Proxy{
+
+
+
     public static ManagerImplBase narrowCast(Object rawObjectRef) {
-        return null; // todo implement
+        return new ManagerImplProxy((String) rawObjectRef);
     }
 
     public abstract String createAccount(String owner, String branch)
