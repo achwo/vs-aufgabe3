@@ -1,8 +1,9 @@
 package bank_access;
 
 import mware_lib.InvalidParamException;
+import mware_lib.Proxy;
 
-public abstract class ManagerImplBase {
+public abstract class ManagerImplBase extends Proxy{
 
 
 

@@ -17,7 +17,7 @@ public class ManagerImplProxy extends ManagerImplBase {
 
     @Override
     public String createAccount(String owner, String branch) throws InvalidParamException {
-     return null; //sendMessage(objectReference, "transfer", amount);
-
+     String message =  sendMessage(objectReference, "createAccount", owner, branch);
+        return Protocol.returnValueFromMessage(message, String.class).getValue();
     }
 }

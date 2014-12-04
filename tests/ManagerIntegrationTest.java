@@ -1,7 +1,8 @@
-import bank_access.OverdraftException;
+
 import bank_access.ManagerImplBase;
 import mware_lib.NameService;
 import mware_lib.ObjectBroker;
+import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
@@ -10,6 +11,10 @@ import static junit.framework.TestCase.assertEquals;
  * Created by janlepel on 03.12.14.
  */
 public class ManagerIntegrationTest {
+    String accteptedOwner = "accepted";
+    String existsOwner = "exists";
+
+
 
     @Test
     public void testManagerAccount() throws Exception {
@@ -31,11 +36,11 @@ public class ManagerIntegrationTest {
 
         String owner = "Peterson";
         String branch = "Hamburg";
-        assertEquals("exists", managerImplObject.createAccount(owner, branch));
+        assertEquals(existsOwner, managerImplObject.createAccount(owner, branch));
 
         String anotherOwner = "Buskubusku";
         String anotherBranch = "Hamburg";
-        assertEquals("accepted", managerImplObject.createAccount(anotherOwner, anotherBranch));
+        assertEquals(accteptedOwner, managerImplObject.createAccount(anotherOwner, anotherBranch));
 
         ns.shutdown();
         broker.shutdown();
@@ -43,11 +48,11 @@ public class ManagerIntegrationTest {
 
 
     private class TestObject extends ManagerImplBase{
-        String returnValue = "accepted";
+
 
         @Override
         public String createAccount(String owner, String branch) {
-            return owner == "Peters" ? "exists" : "accepted";
+            return owner.equals("Peterson") ? "exists" : "accepted";
         }
     }
 
