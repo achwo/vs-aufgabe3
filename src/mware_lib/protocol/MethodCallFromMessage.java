@@ -33,6 +33,7 @@ class MethodCallFromMessage implements MethodCall {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            if(Objects.equals(stringParams[i], "null")) returnObjects[i] = null;
             i++;
         }
         return returnObjects;

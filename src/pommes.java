@@ -1,6 +1,38 @@
+import java.io.PrintWriter;
 import java.util.Arrays;
 
 public class pommes {
+
+    private static String a = "NDEA";
+    private static String b;
+    private static final byte[] c;
+    private static final String d;
+    private static final byte[] e;
+    private static final String f;
+    private static final byte[] g;
+    private static final String h;
+    private static String i;
+    private static String j;
+    private static String k;
+    private static PrintWriter l;
+    private static String m;
+    private static String n;
+
+    static {
+        b = a + "-1";
+        c = new byte[]{(byte)42, (byte)42, (byte)42};
+        d = new String(c);
+        e = new byte[]{(byte)105, (byte)110, (byte)97, (byte)112, (byte)112, (byte)114, (byte)111, (byte)112, (byte)114, (byte)105, (byte)97, (byte)116, (byte)101, (byte)32, (byte)101, (byte)120, (byte)99, (byte)101, (byte)112, (byte)116, (byte)105, (byte)111, (byte)110};
+        f = new String(e);
+        g = new byte[]{(byte)101, (byte)120, (byte)99, (byte)101, (byte)112, (byte)116, (byte)105, (byte)111, (byte)110, (byte)32, (byte)119, (byte)97, (byte)115, (byte)32, (byte)101, (byte)120, (byte)112, (byte)101, (byte)99, (byte)116, (byte)101, (byte)100};
+        h = new String(g);
+        i = "--bal";
+        j = "depo...";
+        k = "...depo";
+        l = null;
+        m = (new Throwable()).getStackTrace()[0].getClassName() + ".log";
+        n = "-debug";
+    }
 
     public static void main(String[] args) {
         // (filiale)

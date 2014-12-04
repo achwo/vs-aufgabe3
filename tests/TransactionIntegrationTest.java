@@ -64,11 +64,17 @@ public class TransactionIntegrationTest {
 
     }
 
+    @Test(expected = InvalidParamException.class)
+    public void testNullAccount() throws Exception {
+        transaction.deposit(null, 12.0);
+    }
+
     private class TestObject extends TransactionImplBase{
         private double balance = 0.0;
 
         @Override
         public void deposit(String accountID, double amount) throws InvalidParamException {
+            if(accountID == null) throw new InvalidParamException("Invalid account null");
             assertEquals(accountName, accountID);
             checkPositiveValue(amount);
             balance += amount;
