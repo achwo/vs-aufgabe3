@@ -16,11 +16,9 @@ public class NameService implements Runnable {
 
     private final NameServiceRequestService requestService;
     private final Map<String, Object> names = new HashMap<>();
+    private final Logger logger;
 
     public static void main(String[] args) {
-        Logger logger = new Logger();
-
-        logger.log("test");
         int port = 15000;
         if (args.length != 0) port = Integer.parseInt(args[0]);
 
@@ -28,6 +26,8 @@ public class NameService implements Runnable {
     }
 
     public NameService(int port) {
+        logger = new Logger(this);
+        logger.log("test");
         this.requestService = new NameServiceRequestService(port, this);
     }
 
