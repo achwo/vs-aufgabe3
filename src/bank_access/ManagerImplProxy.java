@@ -1,6 +1,7 @@
 package bank_access;
 
 import mware_lib.Logger;
+import mware_lib.ObjectBroker;
 import mware_lib.protocol.ExceptionValue;
 import mware_lib.protocol.Protocol;
 
@@ -10,7 +11,8 @@ import static mware_lib.protocol.Protocol.*;
 
 public class ManagerImplProxy extends ManagerImplBase {
     private final String objectReference;
-    private Logger logger = new Logger(this);
+    private final Logger logger = new Logger(this, ObjectBroker.LOGGING);
+
     public ManagerImplProxy(String rawObjRef) {
         this.objectReference = rawObjRef;
     }

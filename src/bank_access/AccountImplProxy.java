@@ -1,6 +1,7 @@
 package bank_access;
 
 import mware_lib.Logger;
+import mware_lib.ObjectBroker;
 import mware_lib.protocol.ExceptionValue;
 import mware_lib.protocol.Protocol;
 import mware_lib.protocol.ReturnValue;
@@ -11,7 +12,7 @@ import static mware_lib.protocol.Protocol.*;
 
 public class AccountImplProxy extends AccountImplBase {
     private final String objectReference;
-    private Logger logger = new Logger(this);
+    private final Logger logger = new Logger(this, ObjectBroker.LOGGING);
     public AccountImplProxy(String rawObjRef) {this.objectReference = rawObjRef;}
 
     @Override

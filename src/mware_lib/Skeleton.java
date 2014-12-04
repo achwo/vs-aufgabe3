@@ -10,10 +10,10 @@ import static mware_lib.protocol.Protocol.*;
 
 public class Skeleton {
     private final Object servant;
-    private final Logger logger;
+    private final Logger logger = new Logger(this, ObjectBroker.LOGGING);
+
 
     public Skeleton(Object servant) {
-        this.logger = new Logger(this, ObjectBroker.LOGGING);
         this.servant = servant;
     }
 
