@@ -1,7 +1,5 @@
 package mware_lib.protocol;
 
-import com.sun.deploy.util.StringUtils;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +36,7 @@ class MethodCallFromMethodWithParams implements MethodCall {
             strings.add(Objects.toString(o));
         }
 
-        return StringUtils.join(strings, "|");
+        return Protocol.join(strings, "|");
     }
 
     @Override

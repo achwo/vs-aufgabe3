@@ -1,6 +1,7 @@
 package mware_lib.protocol;
 
 
+import java.util.Collection;
 
 public class Protocol {
 
@@ -58,6 +59,10 @@ public class Protocol {
 
     public static String returnMessageType(String message) {
         return ProtocolHelper.returnMessageType(message);
+    }
+
+    public static String join(Collection<String> collection, String delimiter) {
+        return ProtocolHelper.join(collection, delimiter);
     }
 
     public static <E> ReturnValue<E> returnValueFromMessage(String message, Class<E> type) {

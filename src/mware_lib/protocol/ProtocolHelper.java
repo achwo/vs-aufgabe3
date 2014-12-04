@@ -1,9 +1,7 @@
 package mware_lib.protocol;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 class ProtocolHelper {
     private static final Map<Class<?>, Class<?>> wrappedPrimitives = new HashMap<>();
@@ -36,5 +34,16 @@ class ProtocolHelper {
         else if(message.startsWith(Protocol.RETURN)) type = Protocol.RETURN;
 
         return type;
+    }
+
+    static String join(Collection<String> collection, String delimiter) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for(String elem: collection) {
+            if(stringBuilder.length() != 0) stringBuilder.append(delimiter);
+            stringBuilder.append(elem);
+        }
+
+        return stringBuilder.toString();
     }
 }

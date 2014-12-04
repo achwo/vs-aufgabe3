@@ -1,6 +1,5 @@
 package mware_lib.protocol;
 
-import com.sun.deploy.util.StringUtils;
 import mware_lib.protocol.exceptions.InvalidMessageException;
 
 import java.util.ArrayList;
@@ -82,7 +81,7 @@ class MessageImpl implements Message {
             strings.add(Objects.toString(o));
         }
 
-        methodCall = StringUtils.join(strings, Protocol.DELIMITER);
+        methodCall = Protocol.join(strings, Protocol.DELIMITER);
     }
 
 
