@@ -1,5 +1,6 @@
 package name_service;
 
+import mware_lib.Logger;
 import mware_lib.Skeleton;
 import mware_lib.protocol.Message;
 import mware_lib.protocol.Protocol;
@@ -15,6 +16,7 @@ public class NameService implements Runnable {
 
     private final NameServiceRequestService requestService;
     private final Map<String, Object> names = new HashMap<>();
+    private final Logger logger;
 
     public static void main(String[] args) {
         int port = 15000;
@@ -24,11 +26,14 @@ public class NameService implements Runnable {
     }
 
     public NameService(int port) {
+        logger = new Logger(this);
+        logger.log("test");
         this.requestService = new NameServiceRequestService(port, this);
     }
 
     @SuppressWarnings("UnusedDeclaration")
     public void rebind(Object servant, String name) {
+        logger.log("rebind(" + servant + ", " + name + ")");
         names.put(name, servant);
     }
 
