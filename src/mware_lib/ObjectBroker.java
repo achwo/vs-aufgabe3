@@ -39,7 +39,7 @@ public class ObjectBroker {
         return requestService.getPort();
     }
 
-    public void shutdown() {
+    public void shutDown() {
         requestService.shutdown();
     }
 

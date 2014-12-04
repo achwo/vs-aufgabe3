@@ -48,7 +48,7 @@ public class AccountIntegrationTest {
     @After
     public void tearDown() throws Exception {
         ns.shutdown();
-        broker.shutdown();
+        broker.shutDown();
     }
 
     private class TestObject extends AccountImplBase {

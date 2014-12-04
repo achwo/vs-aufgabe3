@@ -36,7 +36,7 @@ public class TransactionIntegrationTest {
     @After
     public void tearDown() {
         realNameService.shutdown();
-        broker.shutdown();
+        broker.shutDown();
     }
 
     @Test

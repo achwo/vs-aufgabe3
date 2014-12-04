@@ -39,7 +39,7 @@ public class ManagerIntegrationTest {
     @After
     public void tearDown() throws Exception {
         ns.shutdown();
-        broker.shutdown();
+        broker.shutDown();
     }
 
     @Test
