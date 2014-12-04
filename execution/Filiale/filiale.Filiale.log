@@ -1,0 +1,5 @@
+Bank resolved.
+*** createAccount: inappropriate exception '1' class java.lang.ArrayIndexOutOfBoundsException
+*** createAccount: inappropriate exception '1' class java.lang.ArrayIndexOutOfBoundsException
+Oops, something fundamental has gone wrong - see stack trace!
+(Have you launched your programmes in the correct order?)
