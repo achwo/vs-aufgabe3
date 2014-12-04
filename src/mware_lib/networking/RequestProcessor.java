@@ -1,5 +1,6 @@
 package mware_lib.networking;
 
+import mware_lib.Logger;
 import mware_lib.ObjectBroker;
 import mware_lib.Skeleton;
 import mware_lib.protocol.Message;
@@ -12,6 +13,7 @@ class RequestProcessor implements Runnable {
 
     private final Socket socket;
     private final ObjectBroker broker;
+    private final Logger logger =  new Logger(this, ObjectBroker.LOGGING);
 
     public RequestProcessor(Socket socket, ObjectBroker broker) {
 
@@ -38,7 +40,7 @@ class RequestProcessor implements Runnable {
 
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage());
         }
     }
 
@@ -49,7 +51,7 @@ class RequestProcessor implements Runnable {
             String line = in.readLine();
             message = Protocol.message(line);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(e.getMessage());
         }
         return message;
     }

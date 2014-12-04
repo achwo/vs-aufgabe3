@@ -1,5 +1,6 @@
 package mware_lib.networking;
 
+import mware_lib.Logger;
 import mware_lib.ObjectBroker;
 
 import java.io.IOException;
@@ -10,6 +11,7 @@ public class RequestService implements Runnable {
 
     private final ObjectBroker broker;
     private ServerSocket serverSocket;
+    private final Logger logger =  new Logger(this, ObjectBroker.LOGGING);
 
     public RequestService(ObjectBroker broker, Integer port) {
         this.broker = broker;
@@ -17,7 +19,7 @@ public class RequestService implements Runnable {
         try {
             this.serverSocket = new ServerSocket(port);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage());
         }
     }
 
@@ -47,7 +49,7 @@ public class RequestService implements Runnable {
         try {
             serverSocket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage());
         }
     }
 
