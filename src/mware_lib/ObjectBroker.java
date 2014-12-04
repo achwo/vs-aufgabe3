@@ -4,7 +4,7 @@ import mware_lib.networking.RequestService;
 
 public class ObjectBroker {
 
-    public static boolean LOGGING = true;
+    public static boolean LOGGING = false;
 
     private final String serviceHost;
     private final int nsPort;

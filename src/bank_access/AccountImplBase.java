@@ -5,6 +5,7 @@ import mware_lib.Proxy;
 
 public abstract class AccountImplBase extends Proxy{
     public static AccountImplBase narrowCast(Object rawObjectRef) {
+        if(rawObjectRef == null) return null;
         return new AccountImplProxy((String) rawObjectRef);
     }
 

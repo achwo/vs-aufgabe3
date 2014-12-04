@@ -4,6 +4,7 @@ import mware_lib.Proxy;
 
 public abstract class TransactionImplBase extends Proxy {
     public static TransactionImplBase narrowCast(Object rawObjectRef) {
+        if(rawObjectRef == null) return null;
         return new TransactionImplProxy((String) rawObjectRef);
     }
 
