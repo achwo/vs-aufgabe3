@@ -6,9 +6,7 @@ import mware_lib.protocol.Protocol;
 
 import java.util.Objects;
 
-import static mware_lib.protocol.Protocol.EXCEPTION;
-import static mware_lib.protocol.Protocol.exceptionValueFromMessage;
-import static mware_lib.protocol.Protocol.returnMessageType;
+import static mware_lib.protocol.Protocol.*;
 
 public class ManagerImplProxy extends ManagerImplBase {
     private final String objectReference;
@@ -34,5 +32,10 @@ public class ManagerImplProxy extends ManagerImplBase {
             if(Objects.equals(exceptionValue.getType(), InvalidParamException.class))
                 throw (InvalidParamException)exceptionValue.getValue();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "ManagerImplProxy(" + objectReference + ")";
     }
 }

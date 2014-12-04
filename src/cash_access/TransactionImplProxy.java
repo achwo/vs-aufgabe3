@@ -61,5 +61,8 @@ public class TransactionImplProxy extends TransactionImplBase {
         }
     }
 
-
+    @Override
+    public String toString() {
+        return "TransactionImplProxy(" + objectReference + ")";
+    }
 }

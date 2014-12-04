@@ -28,7 +28,7 @@ public class NameService implements Runnable {
     public NameService(int port, boolean logging) {
         this.logging = logging;
         logger = new Logger(this, this.logging);
-        logger.log("test");
+        logger.log("Starting nameservice");
         this.requestService = new NameServiceRequestService(port, this);
     }
 
@@ -62,6 +62,11 @@ public class NameService implements Runnable {
 
     }
 
+    @Override
+    public String toString() {
+        return "Nameservice";
+    }
+
     // gets message via socket and converts them to method calls
     private class NameServiceRequestProcessor {
         public NameServiceRequestProcessor(Socket socket, NameService nameService) throws IOException {
@@ -84,6 +89,11 @@ public class NameService implements Runnable {
             logger.log("Sent message {" + result + "} to " + socket.getInetAddress());
 
             socket.close();
+        }
+
+        @Override
+        public String toString() {
+            return "NSReqProc";
         }
     }
 
@@ -130,6 +140,11 @@ public class NameService implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        @Override
+        public String toString() {
+            return "NSReqService";
         }
     }
 }

@@ -7,9 +7,7 @@ import mware_lib.protocol.ReturnValue;
 
 import java.util.Objects;
 
-import static mware_lib.protocol.Protocol.EXCEPTION;
-import static mware_lib.protocol.Protocol.exceptionValueFromMessage;
-import static mware_lib.protocol.Protocol.returnMessageType;
+import static mware_lib.protocol.Protocol.*;
 
 public class AccountImplProxy extends AccountImplBase {
     private final String objectReference;
@@ -27,14 +25,14 @@ public class AccountImplProxy extends AccountImplBase {
 
     @Override
     public double getBalance() throws InvalidParamException{
-        logger.log("Called AccountImplProxy -> getBalanced");
+        logger.log("getBalanced()");
         String returnValue = sendMessage(objectReference, "getBalance");
         logger.log("From sendMessage: " + returnValue);
 
         throwIfInvalidParamException(returnValue);
         ReturnValue<Double> value = Protocol.returnValueFromMessage(returnValue, Double.class);
 
-        logger.log("Returnvalue: " + value.getValue());
+        logger.log("getBalance Returnvalue: " + value.getValue());
         return value.getValue();
     }
 
@@ -52,5 +50,10 @@ public class AccountImplProxy extends AccountImplBase {
             if(Objects.equals(exceptionValue.getType(), InvalidParamException.class))
                 throw (InvalidParamException)exceptionValue.getValue();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "AccountImplProxy(" + objectReference + ")";
     }
 }
