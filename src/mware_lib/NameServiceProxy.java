@@ -48,15 +48,9 @@ public class NameServiceProxy extends NameService {
     @Override
     public Object resolve(String name) {
         String result = sendMessage("resolve", name);
-        Object resultObject = null;
+        ReturnValue<Object> returnValue = Protocol.returnValueFromMessage(result, Object.class);
 
-        try {
-            ReturnValue<Object> returnValue = Protocol.returnValueFromMessage(result, Object.class);
-            resultObject = returnValue.getValue();
-        } catch (Exception e) {
-            logger.log(e.getMessage());
-        }
-        return resultObject;
+        return returnValue.getValue();
     }
 
     private String sendMessage(String methodName, Object... args) {

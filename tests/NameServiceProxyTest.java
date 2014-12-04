@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
@@ -42,6 +43,12 @@ public class NameServiceProxyTest {
     public void testBindObjectToNameServicePutsSkeletonToRefManager() throws Exception {
         nameServiceProxy.rebind(testObject, "name");
         assertEquals(true, testManager.wasCalled);
+    }
+
+    @Test
+    public void testNullResolve() throws Exception {
+        Object result = nameServiceProxy.resolve("unknown");
+        assertNull(result);
     }
 
     private class TestReferenceManager extends ReferenceManager {

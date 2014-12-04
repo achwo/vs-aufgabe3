@@ -24,6 +24,7 @@ class ReturnValueFromMessage<E> implements ReturnValue<E> {
     @Override
     public E getValue() {
         if (value == null) deserialize();
+        if(Objects.equals(value, "null")) return null;
         return value;
     }
 

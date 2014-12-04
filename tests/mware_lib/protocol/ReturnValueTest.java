@@ -66,7 +66,7 @@ public class ReturnValueTest {
     public void testReturnMessageIsNull() throws Exception {
         ReturnValue<String> stringReturnValue =
                 Protocol.returnValueFromMessage("return|null", String.class);
-        assertEquals("null", stringReturnValue.getValue());
+        assertEquals(null, stringReturnValue.getValue());
     }
 
     @Test
