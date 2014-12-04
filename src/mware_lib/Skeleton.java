@@ -34,7 +34,7 @@ public class Skeleton {
         } catch (InvocationTargetException e) {
             Throwable cause = e.getCause();
             if(isOneOfOurExceptions(cause)) return exceptionValue(cause).asString();
-            else e.printStackTrace();
+            else logger.log(e.getMessage());
         } catch (IllegalAccessException e) {
             logger.log(e.getMessage());
         }

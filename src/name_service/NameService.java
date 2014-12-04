@@ -57,7 +57,7 @@ public class NameService implements Runnable {
         try {
             t.join();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage());
         }
 
     }
@@ -113,7 +113,7 @@ public class NameService implements Runnable {
                 logger.log("Open ServerSocket on port " + this.port);
                 this.serverSocket = new ServerSocket(this.port);
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.log(e.getMessage());
             }
         }
 
@@ -138,7 +138,7 @@ public class NameService implements Runnable {
                 logger.log("shutdown()");
                 serverSocket.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.log(e.getMessage());
             }
         }
 

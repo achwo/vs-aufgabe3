@@ -5,6 +5,7 @@ import mware_lib.protocol.Message;
 import mware_lib.protocol.ObjectReference;
 import mware_lib.protocol.Protocol;
 import mware_lib.protocol.ReturnValue;
+import static mware_lib.protocol.Protocol.*;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -14,6 +15,8 @@ public class NameServiceProxy extends NameService {
     private final ReferenceManager referenceManager;
     private final String objectReference;
     private final int localPort;
+    private final Logger logger = new Logger(this, ObjectBroker.LOGGING);
+
 
     public NameServiceProxy(
             String nameServiceHost, int nameServicePort,
@@ -51,7 +54,7 @@ public class NameServiceProxy extends NameService {
             ReturnValue<Object> returnValue = Protocol.returnValueFromMessage(result, Object.class);
             resultObject = returnValue.getValue();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(e.getMessage());
         }
         return resultObject;
     }

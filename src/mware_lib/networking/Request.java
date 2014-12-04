@@ -1,5 +1,8 @@
 package mware_lib.networking;
 
+import mware_lib.Logger;
+import mware_lib.ObjectBroker;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -7,6 +10,7 @@ public class Request {
     private final String host;
     private final Integer port;
     private final String message;
+    private final Logger logger =  new Logger(this, ObjectBroker.LOGGING);
 
     public Request(String host, Integer port, String message) {
 
@@ -33,7 +37,7 @@ public class Request {
             socket.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage());
         }
 
         return result;
