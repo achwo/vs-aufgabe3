@@ -15,7 +15,7 @@ public class ExceptionValueTest {
 
     @Test
     public void testExceptionMessage() throws Exception {
-        ExceptionValue<? extends Exception> exceptionValue =
+        ExceptionValue exceptionValue =
                 Protocol.exceptionValueFromMessage("exception|java.lang.Exception|hallo", Exception.class);
         assertEquals("hallo", exceptionValue.getValue().getMessage());
     }
@@ -33,7 +33,7 @@ public class ExceptionValueTest {
     @Test
     public void testExceptionMessageIsEmptyString() throws Exception {
         String message = "exception|java.lang.Exception|";
-        ExceptionValue<Exception> result =
+        ExceptionValue result =
                 Protocol.exceptionValueFromMessage(message, Exception.class);
         assertEquals("", result.getValue().getMessage());
         assertEquals(message, result.asString());
@@ -41,7 +41,7 @@ public class ExceptionValueTest {
 
     @Test
     public void testExceptionMessageIsNull() throws Exception {
-        ExceptionValue<Exception> stringExceptionValue =
+        ExceptionValue stringExceptionValue =
                 Protocol.exceptionValueFromMessage("exception|java.lang.Exception|null", Exception.class);
         assertEquals("null", stringExceptionValue.getValue().getMessage());
     }
@@ -49,7 +49,7 @@ public class ExceptionValueTest {
     @Test
     public void testString() throws Exception {
         Exception e = new Exception("hallo");
-        ExceptionValue<Exception> value = Protocol.exceptionValue(e, Exception.class);
+        ExceptionValue value = Protocol.exceptionValue(e, Exception.class);
         assertEquals("exception|java.lang.Exception|hallo", value.asString());
         assertEquals("hallo", value.getValue().getMessage());
     }
@@ -57,7 +57,7 @@ public class ExceptionValueTest {
     @Test
     public void testEmptyString() throws Exception {
         Exception e = new Exception("");
-        ExceptionValue<Exception> value = Protocol.exceptionValue(e, Exception.class);
+        ExceptionValue value = Protocol.exceptionValue(e, Exception.class);
         assertEquals("exception|java.lang.Exception|", value.asString());
         assertEquals("", value.getValue().getMessage());
     }
@@ -65,7 +65,7 @@ public class ExceptionValueTest {
     @Test
     public void testNull() throws Exception {
         Exception e = new Exception((String)null);
-        ExceptionValue<Exception> value = Protocol.exceptionValue(e, Exception.class);
+        ExceptionValue value = Protocol.exceptionValue(e, Exception.class);
         assertEquals("exception|java.lang.Exception|null", value.asString());
         assertEquals(null, value.getValue().getMessage());
     }

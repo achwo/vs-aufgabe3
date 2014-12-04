@@ -53,7 +53,10 @@ public class TransactionIntegrationTest {
         transaction.deposit(accountName, -25.0);
     }
 
-    // todo test overdraftexception
+    @Test(expected = OverdraftException.class)
+    public void testOverdraftException() throws Exception {
+        transaction.withdraw(accountName, 25.0);
+    }
 
 
     private class TestObject extends TransactionImplBase{
