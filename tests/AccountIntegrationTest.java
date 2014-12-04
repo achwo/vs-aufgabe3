@@ -2,6 +2,7 @@ import bank_access.AccountImplBase;
 import mware_lib.InvalidParamException;
 import mware_lib.NameService;
 import mware_lib.ObjectBroker;
+import mware_lib.OverdraftException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +13,7 @@ public class AccountIntegrationTest {
 
     private name_service.NameService ns;
     private AccountImplBase account;
+    private ObjectBroker broker;
 
     @Before
     public void setUp() throws Exception {
@@ -22,7 +24,7 @@ public class AccountIntegrationTest {
 
         TestObject obj = new TestObject();
 
-        ObjectBroker broker = ObjectBroker.init("127.0.0.1", nsPort, false);
+        broker = ObjectBroker.init("127.0.0.1", nsPort, false);
         NameService nameService = broker.getNameService();
 
         nameService.rebind(obj, "test");
@@ -34,25 +36,26 @@ public class AccountIntegrationTest {
 
     @Test
     public void testAccount() throws Exception {
-        //Act
         account.transfer(1000.00);
-
-        //Assert
         assertEquals(1000.00, account.getBalance());
     }
 
-    // todo test possible exceptions
+    @Test(expected = OverdraftException.class)
+    public void testOverdraftException() throws Exception {
+        account.transfer(-25.0);
+    }
 
     @After
     public void tearDown() throws Exception {
         ns.shutdown();
+        broker.shutdown();
     }
-
 
     private class TestObject extends AccountImplBase {
         private double balance = 0.0;
 
-        public void transfer(double amount) {
+        public void transfer(double amount) throws OverdraftException {
+            if(amount < 0.0) throw new OverdraftException("bla");
             balance += amount;
         }
 

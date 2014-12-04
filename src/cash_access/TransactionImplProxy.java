@@ -41,19 +41,5 @@ public class TransactionImplProxy extends TransactionImplBase {
         return value.getValue();
     }
 
-    private void throwIfOverdraftException(String message) throws OverdraftException {
-        if(Objects.equals(returnMessageType(message), EXCEPTION)) {
-            ExceptionValue exceptionValue = exceptionValueFromMessage(message);
-            if (Objects.equals(exceptionValue.getType(), OverdraftException.class))
-                throw (OverdraftException) exceptionValue.getValue();
-        }
-    }
 
-    private void throwIfInvalidParamException(String message) throws InvalidParamException {
-        if(Objects.equals(returnMessageType(message), EXCEPTION)) {
-            ExceptionValue exceptionValue = exceptionValueFromMessage(message);
-            if(Objects.equals(exceptionValue.getType(), InvalidParamException.class))
-                throw (InvalidParamException)exceptionValue.getValue();
-        }
-    }
 }

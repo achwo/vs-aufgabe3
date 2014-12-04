@@ -25,7 +25,6 @@ class ExceptionValueFromMessage<E extends Throwable> implements ExceptionValue<E
         this.stringVersion = message;
     }
 
-    // todo implement
     @Override
     public E getValue() {
         E object = null;

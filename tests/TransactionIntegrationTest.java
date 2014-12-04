@@ -5,7 +5,6 @@ import mware_lib.NameService;
 import mware_lib.ObjectBroker;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
@@ -49,7 +48,7 @@ public class TransactionIntegrationTest {
         assertEquals(5.0, transaction.getBalance(accountName));
     }
 
-    @Test(expected=InvalidParamException.class)
+    @Test(expected = InvalidParamException.class)
     public void testInvalidParamException() throws Exception {
         transaction.deposit(accountName, -25.0);
     }

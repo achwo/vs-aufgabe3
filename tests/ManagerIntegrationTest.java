@@ -1,57 +1,62 @@
 
 import bank_access.ManagerImplBase;
+import mware_lib.InvalidParamException;
 import mware_lib.NameService;
 import mware_lib.ObjectBroker;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Objects;
+
 import static junit.framework.TestCase.assertEquals;
 
-/**
- * Created by janlepel on 03.12.14.
- */
 public class ManagerIntegrationTest {
-    String accteptedOwner = "accepted";
+    String acceptedOwner = "accepted";
     String existsOwner = "exists";
+    private name_service.NameService ns;
+    private ManagerImplBase manager;
+    private ObjectBroker broker;
 
-
-
-    @Test
-    public void testManagerAccount() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         int nsPort = 15000;
-        name_service.NameService ns = new name_service.NameService(nsPort);
-        Thread nsThread = new Thread(ns);
-        nsThread.start();
 
-        ObjectBroker broker = ObjectBroker.init("127.0.0.1", nsPort, false);
-        NameService nameServiceProxy = broker.getNameService();
+        ns = new name_service.NameService(nsPort);
+        new Thread(ns).start();
 
+        TestObject obj = new TestObject();
 
-        TestObject testObject = new TestObject();
-        nameServiceProxy.rebind(testObject, "testObject");
+        broker = ObjectBroker.init("127.0.0.1", nsPort, false);
+        NameService nameService = broker.getNameService();
 
-        Object proxyObject = nameServiceProxy.resolve("testObject");
+        nameService.rebind(obj, "test");
 
-        ManagerImplBase managerImplObject = ManagerImplBase.narrowCast(proxyObject);
+        Object rawObjRef = nameService.resolve("test");
+        manager = ManagerImplBase.narrowCast(rawObjRef);
+    }
 
-        String owner = "Peterson";
-        String branch = "Hamburg";
-        assertEquals(existsOwner, managerImplObject.createAccount(owner, branch));
-
-        String anotherOwner = "Buskubusku";
-        String anotherBranch = "Hamburg";
-        assertEquals(accteptedOwner, managerImplObject.createAccount(anotherOwner, anotherBranch));
-
+    @After
+    public void tearDown() throws Exception {
         ns.shutdown();
         broker.shutdown();
     }
 
+    @Test
+    public void testManagerAccount() throws Exception {
+        assertEquals(existsOwner, manager.createAccount("Peterson", "Hamburg"));
+        assertEquals(acceptedOwner, manager.createAccount("Buskubusku", "Hamburg"));
+    }
+
+    @Test(expected = InvalidParamException.class)
+    public void testInvalidParamException() throws Exception {
+        manager.createAccount("invalid", "Hamburg");
+    }
 
     private class TestObject extends ManagerImplBase{
-
-
         @Override
-        public String createAccount(String owner, String branch) {
+        public String createAccount(String owner, String branch) throws InvalidParamException {
+            if(Objects.equals(owner, "invalid")) throw new InvalidParamException("invalid");
             return owner.equals("Peterson") ? "exists" : "accepted";
         }
     }
