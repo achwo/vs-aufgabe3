@@ -10,20 +10,25 @@ import static mware_lib.protocol.Protocol.*;
 
 public class Skeleton {
     private final Object servant;
+    private final Logger logger;
 
     public Skeleton(Object servant) {
+        this.logger = new Logger(this, ObjectBroker.LOGGING);
         this.servant = servant;
     }
 
     public String invoke(String message) {
+        logger.log("invoke(" + message + ")");
         MethodCall methodCall =
                 methodCallFromMessage(message);
+        logger.log("methodCall = " + methodCall);
 
         Method method = methodCall.getMethod(servant.getClass());
         Object[] args = methodCall.getParams(servant.getClass());
         method.setAccessible(true);
         Object result = null;
         try {
+            logger.log("Invoking method");
             result = method.invoke(servant, args);
 
         } catch (InvocationTargetException e) {
@@ -31,7 +36,7 @@ public class Skeleton {
             if(isOneOfOurExceptions(cause)) return exceptionValue(cause).asString();
             else e.printStackTrace();
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage());
         }
         ReturnValue<Object> returnValue = returnValue(result);
 
@@ -43,5 +48,10 @@ public class Skeleton {
                 || cause instanceof bank_access.OverdraftException
                 || cause instanceof cash_access.InvalidParamException
                 || cause instanceof cash_access.OverdraftException;
+    }
+
+    @Override
+    public String toString() {
+        return "Skeleton(" + servant + ")";
     }
 }
