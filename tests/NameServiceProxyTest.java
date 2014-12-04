@@ -20,7 +20,7 @@ public class NameServiceProxyTest {
     @Before
     public void setUp() {
         testManager = new TestReferenceManager();
-        nameService = new name_service.NameService(PORT);
+        nameService = new name_service.NameService(PORT, false);
         new Thread(nameService).start();
         nameServiceProxy = new NameServiceProxy("127.0.0.1", PORT, testManager, 20000);
         testObject = "servant";

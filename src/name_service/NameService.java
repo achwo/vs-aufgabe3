@@ -2,9 +2,6 @@ package name_service;
 
 import mware_lib.Logger;
 import mware_lib.Skeleton;
-import mware_lib.protocol.Message;
-import mware_lib.protocol.Protocol;
-import mware_lib.protocol.exceptions.InvalidMessageException;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -12,21 +9,25 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
+import static mware_lib.protocol.Protocol.*;
+
 public class NameService implements Runnable {
 
     private final NameServiceRequestService requestService;
     private final Map<String, Object> names = new HashMap<>();
     private final Logger logger;
+    private final boolean logging;
 
     public static void main(String[] args) {
         int port = 15000;
         if (args.length != 0) port = Integer.parseInt(args[0]);
 
-        new Thread(new NameService(port)).start();
+        new Thread(new NameService(port, true)).start();
     }
 
-    public NameService(int port) {
-        logger = new Logger(this);
+    public NameService(int port, boolean logging) {
+        this.logging = logging;
+        logger = new Logger(this, this.logging);
         logger.log("test");
         this.requestService = new NameServiceRequestService(port, this);
     }
@@ -39,10 +40,12 @@ public class NameService implements Runnable {
 
     @SuppressWarnings("UnusedDeclaration")
     public Object resolve(String name) {
+        logger.log("resolve(" + name + ")");
         return names.get(name);
     }
 
     public void shutdown() {
+        logger.log("shutdown()");
         requestService.shutdown();
     }
 
@@ -62,30 +65,23 @@ public class NameService implements Runnable {
     // gets message via socket and converts them to method calls
     private class NameServiceRequestProcessor {
         public NameServiceRequestProcessor(Socket socket, NameService nameService) throws IOException {
+            Logger logger = new Logger(this, logging);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String line = in.readLine();
 
-            Message message = Protocol.nullMessage();
-            try {
-                message = Protocol.message(line);
-            } catch (InvalidMessageException e) {
-                e.printStackTrace();
-            }
-            String methodCall = message.getMethodCallAsString();
+            String methodCall = message(line).getMethodCallAsString();
+            logger.log("Got message: " + methodCall + " from " + socket.getInetAddress());
 
             Skeleton skeleton = new Skeleton(nameService);
-            String result = "";
-            try {
-                result = skeleton.invoke(methodCall);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            String result = skeleton.invoke(methodCall);
 
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
             out.write(result);
             out.newLine();
             out.flush();
+
+            logger.log("Sent message {" + result + "} to " + socket.getInetAddress());
 
             socket.close();
         }
@@ -95,13 +91,16 @@ public class NameService implements Runnable {
     private class NameServiceRequestService implements Runnable {
         private final int port;
         private final NameService nameService;
+        private final Logger logger;
         private ServerSocket serverSocket;
         private boolean running;
 
         public NameServiceRequestService(int port, NameService nameService) {
+            this.logger = new Logger(this, logging);
             this.port = port;
             this.nameService = nameService;
             try {
+                logger.log("Open ServerSocket on port " + this.port);
                 this.serverSocket = new ServerSocket(this.port);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -114,7 +113,9 @@ public class NameService implements Runnable {
             try {
 
                 while (running) {
+                    this.logger.log("Waiting for incoming connection");
                     Socket socket = serverSocket.accept();
+                    this.logger.log("Incoming connection from " + socket.getInetAddress());
                     new NameServiceRequestProcessor(socket, nameService);
                 }
             } catch (IOException e) {
@@ -124,11 +125,11 @@ public class NameService implements Runnable {
 
         public void shutdown() {
             try {
+                logger.log("shutdown()");
                 serverSocket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 }

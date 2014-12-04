@@ -18,7 +18,7 @@ public class AccountIntegrationTest {
     @Before
     public void setUp() throws Exception {
         int nsPort = 15000;
-        ns = new name_service.NameService(nsPort);
+        ns = new name_service.NameService(nsPort, false);
         Thread nsThread = new Thread(ns);
         nsThread.start();
 

@@ -19,7 +19,7 @@ public class TransactionIntegrationTest {
     @Before
     public void setUp() {
         int nsPort = 15000;
-        realNameService = new name_service.NameService(nsPort);
+        realNameService = new name_service.NameService(nsPort, false);
         new Thread(realNameService).start();
         broker = ObjectBroker.init("127.0.0.1", nsPort, false);
 

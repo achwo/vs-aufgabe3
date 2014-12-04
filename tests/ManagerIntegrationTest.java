@@ -22,7 +22,7 @@ public class ManagerIntegrationTest {
     public void setUp() throws Exception {
         int nsPort = 15000;
 
-        ns = new name_service.NameService(nsPort);
+        ns = new name_service.NameService(nsPort, false);
         new Thread(ns).start();
 
         TestObject obj = new TestObject();
