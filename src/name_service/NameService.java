@@ -1,5 +1,6 @@
 package name_service;
 
+import mware_lib.Logger;
 import mware_lib.Skeleton;
 import mware_lib.protocol.Message;
 import mware_lib.protocol.Protocol;
@@ -17,6 +18,9 @@ public class NameService implements Runnable {
     private final Map<String, Object> names = new HashMap<>();
 
     public static void main(String[] args) {
+        Logger logger = new Logger();
+
+        logger.log("test");
         int port = 15000;
         if (args.length != 0) port = Integer.parseInt(args[0]);
 
