@@ -4,16 +4,18 @@ import mware_lib.networking.RequestService;
 
 public class ObjectBroker {
 
-    public static boolean LOGGING = false;
+    public static boolean LOGGING = true;
 
     private final String serviceHost;
     private final int nsPort;
     private final RequestService requestService;
     private final ReferenceManager referenceManager = new ReferenceManager();
-    private final Logger logger = new Logger(this, LOGGING);
+    private final Logger logger;
+
 
     private ObjectBroker(String serviceHost, int nsPort, boolean debug) {
-        LOGGING = debug;
+//        LOGGING = debug;
+        logger = new Logger(this, LOGGING);
         this.serviceHost = serviceHost;
         this.nsPort = nsPort;
 
@@ -37,7 +39,7 @@ public class ObjectBroker {
     }
 
     public Skeleton getSkeleton(Object reference) {
-        logger.log("getSkeleton" + reference);
+        logger.log("getSkeleton(" + reference + ")");
         return referenceManager.getSkeleton(reference);
     }
 
@@ -50,4 +52,8 @@ public class ObjectBroker {
         requestService.shutdown();
     }
 
+    @Override
+    public String toString() {
+        return "ObjectBroker";
+    }
 }

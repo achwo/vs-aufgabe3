@@ -1,10 +1,12 @@
 package mware_lib;
 
+import mware_lib.protocol.ExceptionValue;
 import mware_lib.protocol.MethodCall;
 import mware_lib.protocol.ReturnValue;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import static mware_lib.protocol.Protocol.*;
 
@@ -21,24 +23,25 @@ public class Skeleton {
         logger.log("invoke(" + message + ")");
         MethodCall methodCall =
                 methodCallFromMessage(message);
-        logger.log("methodCall = " + methodCall);
-
         Method method = methodCall.getMethod(servant.getClass());
         Object[] args = methodCall.getParams(servant.getClass());
         method.setAccessible(true);
         Object result = null;
         try {
-            logger.log("Invoking method");
             result = method.invoke(servant, args);
-
         } catch (InvocationTargetException e) {
             Throwable cause = e.getCause();
-            if(isOneOfOurExceptions(cause)) return exceptionValue(cause).asString();
-            else logger.log(e.getMessage());
+            if(isOneOfOurExceptions(cause)) {
+                ExceptionValue exceptionValue = exceptionValue(cause);
+                logger.log("ExceptionValue: " + exceptionValue);
+                return exceptionValue.asString();
+            }
+            else logger.log(Arrays.toString(e.getStackTrace()));
         } catch (IllegalAccessException e) {
             logger.log(e.getMessage());
         }
         ReturnValue<Object> returnValue = returnValue(result);
+        logger.log("ReturnValue: " + returnValue);
 
         return returnValue.asString();
     }

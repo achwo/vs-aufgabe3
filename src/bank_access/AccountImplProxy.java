@@ -26,14 +26,14 @@ public class AccountImplProxy extends AccountImplBase {
 
     @Override
     public double getBalance() throws InvalidParamException{
-        logger.log("getBalanced()");
+        logger.log("getBalance()");
         String returnValue = sendMessage(objectReference, "getBalance");
         logger.log("From sendMessage: " + returnValue);
 
         throwIfInvalidParamException(returnValue);
         ReturnValue<Double> value = Protocol.returnValueFromMessage(returnValue, Double.class);
 
-        logger.log("getBalance Returnvalue: " + value.getValue());
+        logger.log("Returnvalue: " + value.getValue());
         return value.getValue();
     }
 
