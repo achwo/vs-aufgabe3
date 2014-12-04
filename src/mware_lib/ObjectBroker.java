@@ -8,14 +8,16 @@ public class ObjectBroker {
 
     private final String serviceHost;
     private final int nsPort;
-    private final boolean debug;
     private final RequestService requestService;
     private final ReferenceManager referenceManager = new ReferenceManager();
+    private final Logger logger = new Logger(this, LOGGING);
 
     private ObjectBroker(String serviceHost, int nsPort, boolean debug) {
+        LOGGING = debug;
         this.serviceHost = serviceHost;
         this.nsPort = nsPort;
-        this.debug = debug;
+
+        logger.log("Starting");
 
         this.requestService = new RequestService(this);
 
@@ -30,10 +32,12 @@ public class ObjectBroker {
     }
 
     public NameService getNameService() {
+        logger.log("getNameService()");
         return new NameServiceProxy(serviceHost, nsPort, referenceManager, requestService.getPort());
     }
 
     public Skeleton getSkeleton(Object reference) {
+        logger.log("getSkeleton" + reference);
         return referenceManager.getSkeleton(reference);
     }
 
@@ -42,6 +46,7 @@ public class ObjectBroker {
     }
 
     public void shutDown() {
+        logger.log("shutDown()");
         requestService.shutdown();
     }
 
