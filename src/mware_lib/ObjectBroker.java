@@ -14,7 +14,7 @@ public class ObjectBroker {
 
 
     private ObjectBroker(String serviceHost, int nsPort, boolean debug) {
-//        LOGGING = debug;
+        LOGGING = debug;
         logger = new Logger(this, LOGGING);
         this.serviceHost = serviceHost;
         this.nsPort = nsPort;
