@@ -33,6 +33,7 @@ public class NameService implements Runnable {
 
     @SuppressWarnings("UnusedDeclaration")
     public void rebind(Object servant, String name) {
+        logger.log("rebind(" + servant + ", " + name + ")");
         names.put(name, servant);
     }
 
