@@ -1,5 +1,6 @@
 package bank_access;
 
+import mware_lib.Logger;
 import mware_lib.protocol.ExceptionValue;
 import mware_lib.protocol.Protocol;
 import mware_lib.protocol.ReturnValue;
@@ -12,23 +13,28 @@ import static mware_lib.protocol.Protocol.returnMessageType;
 
 public class AccountImplProxy extends AccountImplBase {
     private final String objectReference;
-
+    private Logger logger = new Logger(this);
     public AccountImplProxy(String rawObjRef) {this.objectReference = rawObjRef;}
 
     @Override
     public void transfer(double amount) throws OverdraftException {
-        String returnValue = sendMessage(objectReference, "transfer", amount);
+        logger.log("Called AccountImplProxy -> transfer("+amount+")");
 
+        String returnValue = sendMessage(objectReference, "transfer", amount);
+        logger.log("Returnvalue: " + returnValue);
         throwIfOverdraftException(returnValue);
     }
 
     @Override
     public double getBalance() throws InvalidParamException{
+        logger.log("Called AccountImplProxy -> getBalanced");
         String returnValue = sendMessage(objectReference, "getBalance");
+        logger.log("From sendMessage: " + returnValue);
 
         throwIfInvalidParamException(returnValue);
         ReturnValue<Double> value = Protocol.returnValueFromMessage(returnValue, Double.class);
 
+        logger.log("Returnvalue: " + value.getValue());
         return value.getValue();
     }
 
