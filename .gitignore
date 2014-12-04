@@ -18,3 +18,4 @@ hs_err_pid*
 *.log
 out/
 .idea/misc.xml
+.DS_Store

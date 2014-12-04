@@ -74,7 +74,7 @@ public class NameService implements Runnable {
 
             Skeleton skeleton = new Skeleton(nameService);
             String result = skeleton.invoke(methodCall);
-
+g
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
             out.write(result);
