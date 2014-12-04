@@ -5,6 +5,7 @@ import mware_lib.NameService;
 import mware_lib.ObjectBroker;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
@@ -58,6 +59,11 @@ public class TransactionIntegrationTest {
         transaction.withdraw(accountName, 25.0);
     }
 
+    @Test(expected = InvalidParamException.class)
+    public void testWithdrawInvalidParamException() throws Exception {
+        transaction.withdraw(accountName, -12.0);
+
+    }
 
     private class TestObject extends TransactionImplBase{
         private double balance = 0.0;

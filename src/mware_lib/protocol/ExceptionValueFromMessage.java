@@ -3,7 +3,6 @@ package mware_lib.protocol;
 import mware_lib.protocol.exceptions.InvalidMessageException;
 
 import java.lang.reflect.Constructor;
-import java.util.Arrays;
 import java.util.Objects;
 
 class ExceptionValueFromMessage<E extends Throwable> implements ExceptionValue<E> {
@@ -53,6 +52,11 @@ class ExceptionValueFromMessage<E extends Throwable> implements ExceptionValue<E
     @Override
     public String asString() {
         return stringVersion;
+    }
+
+    @Override
+    public String getTypeAsString() {
+        return type;
     }
 
     @Override

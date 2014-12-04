@@ -2,7 +2,6 @@ package cash_access;
 
 import mware_lib.protocol.ExceptionValue;
 import mware_lib.protocol.ReturnValue;
-import mware_lib.protocol.exceptions.InvalidMessageException;
 import mware_lib.InvalidParamException;
 import mware_lib.OverdraftException;
 
@@ -21,34 +20,40 @@ public class TransactionImplProxy extends TransactionImplBase {
     public void deposit(String accountID, double amount) throws InvalidParamException {
         String returnValue = sendMessage(objectReference, "deposit", accountID, amount);
 
-        if(Objects.equals(returnMessageType(returnValue), EXCEPTION)) {
-            try {
-                ExceptionValue<InvalidParamException> exceptionValue =
-                        exceptionValueFromMessage(returnValue, InvalidParamException.class);
-                throw exceptionValue.getValue();
-            } catch (InvalidMessageException e) {
-                e.printStackTrace();
-            }
-        }
+        throwIfInvalidParamException(returnValue);
     }
 
     @Override
     public void withdraw(String accountID, double amount) throws InvalidParamException, OverdraftException {
-        sendMessage(objectReference, "withdraw", accountID, amount);
+        String returnValue = sendMessage(objectReference, "withdraw", accountID, amount);
+
+        throwIfInvalidParamException(returnValue);
+        throwIfOverdraftException(returnValue);
     }
 
     @Override
     public double getBalance(String accountID) throws InvalidParamException {
-        String result = sendMessage(objectReference, "getBalance", accountID);
-        Double balance = -1.0;
-        try {
-            ReturnValue<Double> value = returnValueFromMessage(result, Double.class);
-            balance = value.getValue();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return balance;
+        String returnValue = sendMessage(objectReference, "getBalance", accountID);
 
-        // todo throw exceptions
+        throwIfInvalidParamException(returnValue);
+
+        ReturnValue<Double> value = returnValueFromMessage(returnValue, Double.class);
+        return value.getValue();
+    }
+
+    private void throwIfOverdraftException(String message) throws OverdraftException {
+        if(Objects.equals(returnMessageType(message), EXCEPTION)) {
+            ExceptionValue exceptionValue = exceptionValueFromMessage(message);
+            if (Objects.equals(exceptionValue.getType(), OverdraftException.class))
+                throw (OverdraftException) exceptionValue.getValue();
+        }
+    }
+
+    private void throwIfInvalidParamException(String message) throws InvalidParamException {
+        if(Objects.equals(returnMessageType(message), EXCEPTION)) {
+            ExceptionValue exceptionValue = exceptionValueFromMessage(message);
+            if(Objects.equals(exceptionValue.getType(), InvalidParamException.class))
+                throw (InvalidParamException)exceptionValue.getValue();
+        }
     }
 }

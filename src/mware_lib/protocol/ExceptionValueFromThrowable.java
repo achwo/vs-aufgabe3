@@ -5,8 +5,8 @@ public class ExceptionValueFromThrowable<E extends Throwable> implements Excepti
     private final String message;
     private final E value;
 
-    public ExceptionValueFromThrowable(E e, Class<E> type) {
-        this.type = type;
+    public ExceptionValueFromThrowable(E e) {
+        this.type = (Class<E>) e.getClass();
         this.message = e.getMessage();
         this.value = e;
     }
@@ -25,6 +25,11 @@ public class ExceptionValueFromThrowable<E extends Throwable> implements Excepti
     public String asString() {
         return String.join(Protocol.DELIMITER, Protocol.EXCEPTION,
                 type.getCanonicalName(), message);
+    }
+
+    @Override
+    public String getTypeAsString() {
+        return type.getCanonicalName();
     }
 
     @Override

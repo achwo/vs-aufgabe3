@@ -72,12 +72,12 @@ public class Protocol {
         return returnValue;
     }
 
-    public static <E extends Throwable> ExceptionValue<E> exceptionValueFromMessage(String message, Class<E> exceptionClass) {
+    public static <E extends Throwable> ExceptionValue<E> exceptionValueFromMessage(String message) {
         return new ExceptionValueFromMessage<>(message);
     }
 
-    public static <E extends Throwable> ExceptionValue<E> exceptionValue(E e, Class<E> type) {
-        return new ExceptionValueFromThrowable<>(e, type);
+    public static <E extends Throwable> ExceptionValue exceptionValue(E e) {
+        return new ExceptionValueFromThrowable<>(e);
     }
 
     private static class NullMessage implements Message {
