@@ -1,5 +1,7 @@
 package mware_lib;
 
+import bank_access.InvalidParamException;
+import bank_access.OverdraftException;
 import mware_lib.networking.Request;
 import mware_lib.protocol.ExceptionValue;
 import mware_lib.protocol.Message;
@@ -28,19 +30,4 @@ public abstract class Proxy {
         return request.invoke();
     }
 
-    protected void throwIfOverdraftException(String message) throws OverdraftException {
-        if(Objects.equals(returnMessageType(message), EXCEPTION)) {
-            ExceptionValue exceptionValue = exceptionValueFromMessage(message);
-            if (Objects.equals(exceptionValue.getType(), OverdraftException.class))
-                throw (OverdraftException) exceptionValue.getValue();
-        }
-    }
-
-    protected void throwIfInvalidParamException(String message) throws InvalidParamException {
-        if(Objects.equals(returnMessageType(message), EXCEPTION)) {
-            ExceptionValue exceptionValue = exceptionValueFromMessage(message);
-            if(Objects.equals(exceptionValue.getType(), InvalidParamException.class))
-                throw (InvalidParamException)exceptionValue.getValue();
-        }
-    }
 }

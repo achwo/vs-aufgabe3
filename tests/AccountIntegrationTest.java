@@ -1,8 +1,8 @@
 import bank_access.AccountImplBase;
-import mware_lib.InvalidParamException;
+import bank_access.InvalidParamException;
 import mware_lib.NameService;
 import mware_lib.ObjectBroker;
-import mware_lib.OverdraftException;
+import bank_access.OverdraftException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

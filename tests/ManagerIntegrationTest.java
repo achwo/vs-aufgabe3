@@ -1,6 +1,6 @@
 
 import bank_access.ManagerImplBase;
-import mware_lib.InvalidParamException;
+import bank_access.InvalidParamException;
 import mware_lib.NameService;
 import mware_lib.ObjectBroker;
 import org.junit.After;

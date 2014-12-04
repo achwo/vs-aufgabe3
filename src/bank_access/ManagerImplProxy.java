@@ -1,8 +1,13 @@
 package bank_access;
 
-import mware_lib.InvalidParamException;
+import mware_lib.protocol.ExceptionValue;
 import mware_lib.protocol.Protocol;
-import mware_lib.protocol.ReturnValue;
+
+import java.util.Objects;
+
+import static mware_lib.protocol.Protocol.EXCEPTION;
+import static mware_lib.protocol.Protocol.exceptionValueFromMessage;
+import static mware_lib.protocol.Protocol.returnMessageType;
 
 public class ManagerImplProxy extends ManagerImplBase {
     private final String objectReference;
@@ -18,5 +23,13 @@ public class ManagerImplProxy extends ManagerImplBase {
         throwIfInvalidParamException(returnValue);
 
         return Protocol.returnValueFromMessage(returnValue, String.class).getValue();
+    }
+
+    protected void throwIfInvalidParamException(String message) throws InvalidParamException {
+        if(Objects.equals(returnMessageType(message), EXCEPTION)) {
+            ExceptionValue exceptionValue = exceptionValueFromMessage(message);
+            if(Objects.equals(exceptionValue.getType(), InvalidParamException.class))
+                throw (InvalidParamException)exceptionValue.getValue();
+        }
     }
 }

@@ -1,8 +1,6 @@
 package bank_access;
 
 
-import mware_lib.InvalidParamException;
-import mware_lib.OverdraftException;
 import mware_lib.Proxy;
 
 public abstract class AccountImplBase extends Proxy{

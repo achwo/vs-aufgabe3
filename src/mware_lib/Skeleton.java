@@ -28,10 +28,7 @@ public class Skeleton {
 
         } catch (InvocationTargetException e) {
             Throwable cause = e.getCause();
-            if(cause instanceof InvalidParamException
-                    || cause instanceof OverdraftException) {
-                return exceptionValue(cause).asString();
-            }
+            if(isOneOfOurExceptions(cause)) return exceptionValue(cause).asString();
             else e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -39,5 +36,12 @@ public class Skeleton {
         ReturnValue<Object> returnValue = returnValue(result);
 
         return returnValue.asString();
+    }
+
+    private boolean isOneOfOurExceptions(Throwable cause) {
+        return cause instanceof bank_access.InvalidParamException
+                || cause instanceof bank_access.OverdraftException
+                || cause instanceof cash_access.InvalidParamException
+                || cause instanceof cash_access.OverdraftException;
     }
 }

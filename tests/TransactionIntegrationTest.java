@@ -1,5 +1,5 @@
-import mware_lib.InvalidParamException;
-import mware_lib.OverdraftException;
+import cash_access.InvalidParamException;
+import cash_access.OverdraftException;
 import cash_access.TransactionImplBase;
 import mware_lib.NameService;
 import mware_lib.ObjectBroker;
@@ -11,7 +11,7 @@ import static junit.framework.TestCase.assertEquals;
 
 public class TransactionIntegrationTest {
 
-    private String accountName = "accountName";
+    private String accountName = "bank0000000999";
     private name_service.NameService realNameService;
     private ObjectBroker broker;
     private TransactionImplBase transaction;
