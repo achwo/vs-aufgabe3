@@ -27,6 +27,7 @@ class MethodCallFromMessage implements MethodCall {
                 if (paramType.isPrimitive())
                     paramType = Protocol.wrap(paramType);
                 valueOf = paramType.getMethod("valueOf", String.class);
+                // null is for static class function call
                 returnObjects[i] = valueOf.invoke(null, stringParams[i]);
             } catch (NoSuchMethodException e) {
                 returnObjects[i] = stringParams[i];
